@@ -22,4 +22,4 @@ jobs:
     - name: Check logs
       run: docker compose logs server --tail 50
     - name: Run Laravel migrations
-      run: docker compose exec php artisan:migrate
+      run: docker compose exec server php artisan:migrate
