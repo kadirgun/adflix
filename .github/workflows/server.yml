@@ -4,18 +4,12 @@ on:
     branches:
       -master
   workflow_dispatch:
-  
-defaults:
-  run:
-    working-directory: /var/www/adflix
     
 jobs:
   build:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v1
-      with:
-        path: /var/www/adflix
     - name: Build and up Docker Compose
       run: docker compose up -d
     - name: Check running containers
