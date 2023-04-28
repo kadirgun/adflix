@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
       with:
-        path: /var/www/adflix
+        path: .
     - name: Build and up Docker Compose
       run: docker compose up -d
     - name: Check running containers
