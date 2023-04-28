@@ -23,3 +23,26 @@ services:
       - ./client:/app/client
       - /app/client/node_modules
     command: "yarn dev"
+  
+  server:
+    build:
+      context: ./server
+    ports:
+      - "5000:8000"
+    volumes:
+      - ./server:/var/www/adflix/server
+    depends_on:
+      - redis
+    working_dir: /var/www/adflix/server
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
+
+    db:
+      image: mysql:latest
+      restart: always
+      env_file: ./server/.env
+      environment:
+        MYSQL_DATABASE: ${DB_DATABASE}
+        MYSQL_USER: ${DB_USERNAME}
+        MYSQL_PASSWORD: ${DB_PASSWORD}

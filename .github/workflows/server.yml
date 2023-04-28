@@ -2,7 +2,9 @@ name: "Deploy Server"
 on:
   push:
     branches:
-      -master
+      - master
+    paths:
+      - server
   workflow_dispatch:
 
 defaults:
@@ -16,7 +18,7 @@ jobs:
     - name: Pull code
       run: git pull
     - name: Build and up Docker Compose
-      run: docker compose up -d
+      run: docker compose up -d --build
     - name: Check running containers
       run: docker compose ps -a
     - name: Check logs
