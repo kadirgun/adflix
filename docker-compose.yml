@@ -5,6 +5,14 @@ volumes:
   client:
 
 services:
+  redis:
+    image: redis:latest
+    healthcheck:
+      test: ["CMD", "redis-client", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   client:
     build:
       context: ./client
