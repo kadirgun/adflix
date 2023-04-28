@@ -4,7 +4,11 @@ on:
     branches:
       -master
   workflow_dispatch:
-
+  
+defaults:
+  run:
+    working-directory: /var/www/adflix
+    
 jobs:
   build:
     runs-on: self-hosted
