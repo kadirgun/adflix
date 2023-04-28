@@ -1,0 +1,17 @@
+version: '3.8'
+
+volumes:
+  node-modules:
+  client:
+
+services:
+  client:
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    volumes:
+      - ./client:/app/client
+      - /app/client/node_modules
+    command: "yarn dev"
