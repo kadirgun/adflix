@@ -13,10 +13,8 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@main
-      with:
-        set-safe-directory: /var/www/adflix
-        path: /var/www/adflix
+    - name: Pull code
+      run: git pull
     - name: Build and up Docker Compose
       run: docker compose up -d
     - name: Check running containers
