@@ -1,0 +1,19 @@
+name: "Deploy Server"
+on:
+  push:
+    branches:
+      -main
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build and up Docker Compose
+      run: docker compose up -d
+    - name: Check running containers
+      run: docker ps -a
+    - name: Check logs
+      run: docker compose logs server --tail 50
+    - name: Run Laravel migrations
+      run: docker compose exec php artisan:migrate
