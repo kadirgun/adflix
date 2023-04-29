@@ -10,14 +10,13 @@ on:
         options:
           - 'adflix-dev'
           - 'adflix'
-
-defaults:
-  run:
-    working-directory: /var/www/${{ github.event.inputs.environment }}
     
 jobs:
   laravel:
     runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: /var/www/${{ github.event.inputs.environment }}
     steps:
       - name: Run Laravel migrations
         run: docker compose exec server php artisan migrate
