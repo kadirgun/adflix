@@ -11,6 +11,7 @@ on:
         description: 'Reset the database'
         required: false
         default: false
+        type: boolean
 
 defaults:
   run:
