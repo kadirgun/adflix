@@ -23,7 +23,12 @@ services:
     build:
       context: ./server
     ports:
-      - "5000:8000"
+      #octane server
+      - target: 8000
+        host_ip: 127.0.0.1
+        published: ${DOCKER_SERVER_PORT}
+        protocol: tcp
+        mode: host
     volumes:
       - ./server:/var/www/adflix/server
       - ./.env:/var/www/adflix/server/.env
@@ -46,7 +51,11 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
-      - 3307:3306
+      - target: 3306
+        host_ip: 127.0.0.1
+        published: ${DOCKER_DB_PORT}
+        protocol: tcp
+        mode: host
     volumes:
       - ./db:/var/lib/mysql
     healthcheck:
