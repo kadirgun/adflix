@@ -1,0 +1,21 @@
+name: "Migrate"
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'server/database/migrations/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: /var/www/adflix
+    
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+    - name: Pull code
+      run: git pull
+    - name: Run Laravel migrations
+      run: docker compose exec server php artisan:migrate
