@@ -20,16 +20,22 @@ jobs:
     steps:
     - name: Pull code
       run: git pull
-    - name: Build and Up Docker Compose
-      run: docker compose --profile production up --build -d
+    - name: Build Docker Compose
+      run: docker compose build
+    - name: Up Docker Compose
+      run: docker compose up server db redis -d
   client:
     runs-on: self-hosted
     needs: build
     steps:
+      - name: Run Client Service
+        run: docker compose run -d --rm client /bin/sh
       - name: Install node modules
         run: docker compose exec client yarn install
       - name: Build client
         run: docker compose exec client yarn build
+      - name: Stop Client Service
+        run: docker compose stop client
   laravel:
     runs-on: self-hosted
     needs: build
