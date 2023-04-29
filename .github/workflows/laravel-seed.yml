@@ -1,16 +1,16 @@
-name: "Laravel Migrate"
+name: "Laravel Seed"
 on:
   push:
     branches:
       - master
     paths:
-      - 'server/database/migrations/**'
+      - 'server/database/seeders/**'
   workflow_dispatch:
       
 defaults:
   run:
     working-directory: /var/www/adflix
-    
+
 jobs:
   migrate:
     runs-on: self-hosted
@@ -19,3 +19,10 @@ jobs:
       run: git pull
     - name: Run Laravel migrations
       run: docker compose exec server php artisan migrate
+  seed:
+    runs-on: self-hosted
+    if: ${{ github.event.inputs.seed == 'true' }}
+    needs: migrate
+    steps:
+    - name: Seed the database
+      run: docker compose exec server php artisan db:seed
