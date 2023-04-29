@@ -30,10 +30,10 @@ jobs:
     steps:
       - name: Reset Laravel migrations
         run: docker compose exec server php artisan migrate:reset
-        if: ${{ github.event.inputs.reset == 'true' }}
+        if: ${{ github.event.inputs.reset }}
       - name: Run Laravel migrations
         run: docker compose exec server php artisan migrate
       - name: Seed database
         run: docker compose exec server php artisan db:seed
-        if: ${{ github.event.inputs.seed == 'true' }}
+        if: ${{ github.event.inputs.seed }}
       
