@@ -1,0 +1,24 @@
+name: "Laravel Migrate"
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: 'Environment'
+        required: true
+        default: 'adflix-dev'
+        options:
+          - 'adflix-dev'
+          - 'adflix'
+
+defaults:
+  run:
+    working-directory: /var/www/${{ github.event.inputs.environment }}
+    
+jobs:
+  laravel:
+    runs-on: self-hosted
+    steps:
+      - name: Run Laravel migrations
+        run: docker compose exec server php artisan migrate
+      
