@@ -10,15 +10,30 @@ on:
         options:
           - 'adflix-dev'
           - 'adflix'
-
-defaults:
-  run:
-    working-directory: /var/www/${{ github.event.inputs.environment }}
+      reset:
+        type: boolean
+        description: 'Reset database'
+        required: true
+        default: false
+      seed:
+        type: boolean
+        description: 'Seed database'
+        required: true
+        default: true
     
 jobs:
-  laravel:
+  migrate:
     runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: /var/www/${{ github.event.inputs.environment }}
     steps:
+      - name: Reset Laravel migrations
+        run: docker compose exec server php artisan migrate:reset
+        if: ${{ github.event.inputs.reset == 'true' }}
       - name: Run Laravel migrations
         run: docker compose exec server php artisan migrate
+      - name: Seed database
+        run: docker compose exec server php artisan db:seed
+        if: ${{ github.event.inputs.seed == 'true' }}
       
