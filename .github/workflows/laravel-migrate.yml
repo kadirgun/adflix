@@ -12,12 +12,12 @@ on:
         required: false
         default: false
         type: boolean
-    inputs:
       seed:
         description: 'Seed the database'
         required: false
         default: false
         type: boolean
+      
 
 defaults:
   run:
