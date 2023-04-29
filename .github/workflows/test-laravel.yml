@@ -5,6 +5,8 @@ on:
       - develop
     paths:
       - 'server/**'
+    types:
+      - opened
   workflow_dispatch:
 
 defaults:
