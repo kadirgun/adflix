@@ -12,17 +12,10 @@ defaults:
     working-directory: /var/www/adflix
 
 jobs:
-  migrate:
+  seed:
     runs-on: self-hosted
     steps:
     - name: Pull code
       run: git pull
     - name: Run Laravel migrations
-      run: docker compose exec server php artisan migrate
-  seed:
-    runs-on: self-hosted
-    if: ${{ github.event.inputs.seed == 'true' }}
-    needs: migrate
-    steps:
-    - name: Seed the database
-      run: docker compose exec server php artisan db:seed
+      run: docker compose exec server php artisan migrate --seed
