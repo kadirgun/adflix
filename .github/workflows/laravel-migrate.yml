@@ -13,7 +13,6 @@ on:
         default: false
         type: boolean
       
-
 defaults:
   run:
     working-directory: /var/www/adflix
