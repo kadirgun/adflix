@@ -7,11 +7,6 @@ on:
       - 'server/database/migrations/**'
   workflow_dispatch:
     inputs:
-      reset:
-        description: 'Reset the database'
-        required: false
-        default: false
-        type: boolean
       seed:
         description: 'Seed the database'
         required: false
@@ -24,15 +19,8 @@ defaults:
     working-directory: /var/www/adflix
     
 jobs:
-  reset:
-    runs-on: self-hosted
-    if: ${{ github.event.inputs.reset == 'true' }}
-    steps:
-    - name: Run Laravel migrations
-      run: docker compose exec server php artisan migrate:fresh
   migrate:
     runs-on: self-hosted
-    if: ${{ github.event.inputs.reset == 'false' }}
     steps:
     - name: Pull code
       run: git pull
