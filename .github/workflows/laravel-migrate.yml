@@ -16,10 +16,10 @@ on:
         required: true
         default: false
       seed:
-          type: boolean
-          description: 'Seed database'
-          required: true
-          default: true
+        type: boolean
+        description: 'Seed database'
+        required: true
+        default: true
     
 jobs:
   migrate:
