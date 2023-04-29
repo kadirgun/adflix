@@ -12,6 +12,12 @@ on:
         required: false
         default: false
         type: boolean
+    inputs:
+      seed:
+        description: 'Seed the database'
+        required: false
+        default: false
+        type: boolean
 
 defaults:
   run:
@@ -32,3 +38,10 @@ jobs:
       run: git pull
     - name: Run Laravel migrations
       run: docker compose exec server php artisan migrate
+  seed:
+    runs-on: self-hosted
+    if: ${{ github.event.inputs.seed == 'true' }}
+    needs: [reset, migrate]
+    steps:
+    - name: Seed the database
+      run: docker compose exec server php artisan db:seed
