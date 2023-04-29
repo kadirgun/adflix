@@ -5,13 +5,6 @@ on:
       - master
     paths:
       - 'server/**'
-  pull_request:
-    branches:
-      - master
-    paths:
-      - 'server/**'
-    types:
-      - closed
   workflow_dispatch:
 
 defaults:
@@ -19,7 +12,7 @@ defaults:
     working-directory: /var/www/adflix
     
 jobs:
-  build:
+  deploy:
     runs-on: self-hosted
     steps:
     - name: Pull code
