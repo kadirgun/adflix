@@ -23,10 +23,10 @@ jobs:
     if: ${{ github.event.inputs.reset == 'true' }}
     steps:
     - name: Run Laravel migrations
-      run: docker compose exec server php artisan migrate:reset
+      run: docker compose exec server php artisan migrate:fresh
   migrate:
     runs-on: self-hosted
-    needs: reset
+    if: ${{ github.event.inputs.reset == 'false' }}
     steps:
     - name: Pull code
       run: git pull
