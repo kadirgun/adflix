@@ -8,7 +8,6 @@ on:
       - 'server/entrypoint.sh'
       - 'docker-compose.yml'
   workflow_dispatch:
-  workflow_call:
 
 defaults:
   run:
