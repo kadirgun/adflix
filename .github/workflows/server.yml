@@ -5,6 +5,13 @@ on:
       - master
     paths:
       - server
+  pull_request:
+    branches:
+      - main
+    paths:
+      - server
+    types:
+      - closed
   workflow_dispatch:
 
 defaults:
