@@ -1,10 +1,10 @@
-name: "Deploy Server"
+name: "Migrate"
 on:
   push:
     branches:
       - master
     paths:
-      - 'server/**'
+      - 'server/database/migrations/**'
   workflow_dispatch:
 
 defaults:
@@ -17,11 +17,5 @@ jobs:
     steps:
     - name: Pull code
       run: git pull
-    - name: Build and up Docker Compose
-      run: docker compose up -d --build
-    - name: Check running containers
-      run: docker compose ps -a
-    - name: Check logs
-      run: docker compose logs server --tail 50
     - name: Run Laravel migrations
       run: docker compose exec server php artisan:migrate
