@@ -31,8 +31,6 @@ jobs:
       - name: Reset Laravel migrations
         run: docker compose exec server php artisan migrate:reset
         if: ${{ github.event.inputs.reset == 'true' }}
-      - name: Dump inputs
-        run: echo ${{ toJson(github.event.inputs) }}
       - name: Run Laravel migrations
         run: docker compose exec server php artisan migrate
       - name: Seed database
