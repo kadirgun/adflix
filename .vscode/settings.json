@@ -1,0 +1,4 @@
+{
+  "LaravelExtraIntellisense.basePathForCode": "${workspaceFolder}/server",
+  "LaravelExtraIntellisense.basePath": "${workspaceFolder}/server"
+}
