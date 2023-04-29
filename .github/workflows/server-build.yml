@@ -1,4 +1,4 @@
-name: "Migrate"
+name: "Server Build"
 on:
   push:
     branches:
