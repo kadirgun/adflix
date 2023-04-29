@@ -31,4 +31,4 @@ jobs:
     - name: Pull code
       run: git pull
     - name: Run Laravel migrations
-      run: docker compose exec server php artisan:migrate
+      run: docker compose exec server php artisan migrate
