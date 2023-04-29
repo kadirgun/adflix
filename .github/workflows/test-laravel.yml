@@ -1,0 +1,40 @@
+name: "Laravel Test"
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'server/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: /var/www/adflix-dev
+    
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - name: Pull code
+      run: git pull
+    - name: Build and Up Docker Compose
+      run: docker compose --profile production up --build -d
+  laravel:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Install composer dependencies
+        run: docker compose exec server composer install
+      - name: Run Laravel migrations
+        run: docker compose exec server php artisan migrate
+      - name: Run Laravel seeders
+        run: docker compose exec server php artisan db:seed
+      - name: Clear optimization cache
+        run: docker compose exec server php artisan optimize:clear
+  test:
+    runs-on: self-hosted
+    needs: laravel
+    steps:
+      - name: Test laravel
+        run: docker compose exec server php artisan test
+      

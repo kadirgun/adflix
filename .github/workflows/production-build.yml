@@ -1,0 +1,45 @@
+name: "Production Build"
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'server/**'
+      - 'client/**'
+      - 'docker-compose.yml'
+  workflow_dispatch:
+  workflow_call:
+
+defaults:
+  run:
+    working-directory: /var/www/adflix
+    
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - name: Pull code
+      run: git pull
+    - name: Build and Up Docker Compose
+      run: docker compose --profile production up --build -d
+  client:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Install node modules
+        run: docker compose exec client yarn install
+      - name: Build client
+        run: docker compose exec client yarn build
+  laravel:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Install composer dependencies
+        run: docker compose exec server composer install
+      - name: Run Laravel migrations
+        run: docker compose exec server php artisan migrate
+      - name: Run Laravel seeders
+        run: docker compose exec server php artisan db:seed
+      - name: Clear optimization cache
+        run: docker compose exec server php artisan optimize:clear
+      

@@ -1,12 +1,9 @@
 version: '3.8'
 
-volumes:
-  node-modules:
-  client:
-
 services:
   redis:
     image: redis:latest
+    profiles: ["development", "production"]
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
       interval: 5s
@@ -14,19 +11,20 @@ services:
       retries: 5
 
   client:
-    build:
-      context: ./client
+    image: node:lts
+    profiles: ["development"]
     ports:
       - "3000:3000"
       - "3001:3001"
     volumes:
       - ./client:/app/client
-      - /app/client/node_modules
-    command: "yarn dev"
+    command: ["sh", "entrypoint.sh"]
+    working_dir: /app/client
   
   server:
     build:
       context: ./server
+    profiles: ["development", "production"]
     ports:
       - "5000:8000"
     volumes:
@@ -44,6 +42,7 @@ services:
 
   db:
     image: mysql:latest
+    profiles: ["development", "production"]
     restart: always
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
