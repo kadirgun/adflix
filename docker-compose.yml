@@ -31,8 +31,11 @@ services:
       - "5000:8000"
     volumes:
       - ./server:/var/www/adflix/server
+      - ./.env:/var/www/adflix/server/.env
     depends_on:
-      - redis
+      redis:
+      mysql:
+        condition: service_healthy
     working_dir: /var/www/adflix/server
     dns:
       - 1.1.1.1
@@ -41,8 +44,17 @@ services:
     db:
       image: mysql:latest
       restart: always
-      env_file: ./server/.env
       environment:
         MYSQL_DATABASE: ${DB_DATABASE}
         MYSQL_USER: ${DB_USERNAME}
         MYSQL_PASSWORD: ${DB_PASSWORD}
+      ports:
+        - 3307:3306
+      volumes:
+        - ./mysql:/var/lib/mysql
+      healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        interval: 2s
+        timeout: 30s
+        retries: 100
+    
