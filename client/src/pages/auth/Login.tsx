@@ -31,7 +31,7 @@ const Login = (props: PaperProps) => {
 					Create account
 				</Anchor>
 			</Text>
-			<Paper p="xl" mt={30} withBorder shadow="lg" {...props}>
+			<Paper p="xl" mt={30} withBorder {...props}>
 				{errors && (
 					<Box mb={"lg"}>
 						<ErrorMessages messages={errors} />
