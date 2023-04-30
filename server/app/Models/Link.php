@@ -9,7 +9,14 @@ class Link extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+    protected $hidden = ['password'];
+
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function clicks(){
+        return $this->hasMany(Click::class);
     }
 }
