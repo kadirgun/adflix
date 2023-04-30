@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\LinkController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('auth')->group(function(){
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::get('user', [AuthController::class, 'user'])->middleware('auth:sanctum');
+});
+
+
+Route::middleware('auth:sanctum')->group(function(){
+    Route::prefix('links')->group(function(){
+        Route::get('/', [LinkController::class, 'list']);
+        Route::post('/', [LinkController::class, 'create']);
+
+        Route::prefix('{id}')->group(function(){
+            Route::get('/', [LinkController::class, 'get']);
+            Route::delete('/', [LinkController::class, 'delete']);
+            Route::put('/', [LinkController::class, 'update']);
+            Route::get('clicks', [LinkController::class, 'clicks']);
+        });
+    });
 });
