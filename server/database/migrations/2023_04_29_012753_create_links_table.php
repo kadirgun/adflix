@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('key')->unique()->index();
             $table->string('target_url');
             $table->string('password')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

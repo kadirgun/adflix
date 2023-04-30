@@ -1,0 +1,32 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class UserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $user = User::firstOrCreate([
+            'id' => 1
+        ], [
+            'name' => 'John Doe',
+            'email' => 'test@gmail.com',
+            'password' => bcrypt('123456789'),
+        ]);
+
+        $user->tokens()->firstOrCreate([
+            'id' => 1
+        ], [
+            'name' => 'auth_token',
+            'token' => hash('sha256', 'JT9nZjrCfkuM6FdRMYKsqV7bdeeHHxDScZ4PjgIP'),
+            'abilities' => ['*']
+        ]);
+    }
+}

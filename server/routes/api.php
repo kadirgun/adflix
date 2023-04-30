@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\ClickController;
 use App\Http\Controllers\User\LinkController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,5 +36,9 @@ Route::middleware('auth:sanctum')->group(function(){
             Route::put('/', [LinkController::class, 'update']);
             Route::get('clicks', [LinkController::class, 'clicks']);
         });
+    });
+
+    Route::prefix('clicks')->group(function(){
+        Route::get('/', [ClickController::class, 'list']);
     });
 });
