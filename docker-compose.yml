@@ -19,6 +19,7 @@ services:
       - "3001:3001"
     volumes:
       - ./client:/app/client
+      - ./.env:/app/client/.env
     command: ["sh", "entrypoint.sh"]
     working_dir: /app/client
   
