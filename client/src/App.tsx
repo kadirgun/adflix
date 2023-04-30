@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { MantineProvider, ColorScheme, ColorSchemeProvider } from "@mantine/core";
+import { useColorScheme, useHotkeys } from "@mantine/hooks";
+import { Notifications } from "@mantine/notifications";
+import { NavigationProgress } from "@mantine/nprogress";
+import AppRouter from "./AppRouter";
+import { ModalsProvider } from "@mantine/modals";
+import { RouterProvider } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "./slices/store";
+import { UIActions } from "./slices/ui";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+	const ui = useAppSelector((state) => state.ui);
+	const preferredColorScheme = ui?.colorScheme || useColorScheme();
+	const dispatch = useDispatch();
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+	const toggleColorScheme = (value?: ColorScheme) => {
+		dispatch(UIActions.setColorScheme(value || (preferredColorScheme === "dark" ? "light" : "dark")));
+	};
 
-export default App
+	useHotkeys([["mod+J", () => toggleColorScheme()]]);
+
+	return (
+		<ColorSchemeProvider colorScheme={preferredColorScheme} toggleColorScheme={toggleColorScheme}>
+			<MantineProvider
+				withGlobalStyles
+				withNormalizeCSS
+				theme={{
+					colorScheme: preferredColorScheme,
+				}}
+			>
+				<ModalsProvider>
+					<NavigationProgress />
+					<Notifications position="top-right" />
+					<RouterProvider router={AppRouter} />
+				</ModalsProvider>
+			</MantineProvider>
+		</ColorSchemeProvider>
+	);
+};
+
+export default App;
