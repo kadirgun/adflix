@@ -22,7 +22,6 @@ const useAxios = () => {
 		},
 		(error) => {
 			const { response } = error;
-			console.log("error");
 			if (response?.status === 401) {
 				dispatch(UserActions.destroyAuth());
 			}

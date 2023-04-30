@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IUser } from "./types";
 
-
 export const UserSlice = createSlice({
 	name: "User",
 	initialState: {
-		auth: {},
+		auth: {
+			access_token: localStorage.getItem("access_token") || "",
+		},
 	} as IUser,
 	reducers: {
 		setAccessToken: (state, { payload }) => {
