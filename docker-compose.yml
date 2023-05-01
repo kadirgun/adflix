@@ -11,15 +11,20 @@ services:
     restart: always
 
   client:
-    image: node:lts
+    build:
+      context: ./client
     ports:
       - "3000:3000"
-      - "3001:3001"
     volumes:
       - ./client:/app/client
       - ./.env:/app/client/.env
     command: ["sh", "entrypoint.sh"]
     working_dir: /app/client
+
+  python:
+    build: ./python
+    env_file:
+      - .env
   
   server:
     build:
