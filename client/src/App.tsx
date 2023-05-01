@@ -18,8 +18,6 @@ const App = () => {
 		dispatch(UIActions.setColorScheme(value || (preferredColorScheme === "dark" ? "light" : "dark")));
 	};
 
-	useHotkeys([["mod+J", () => toggleColorScheme()]]);
-
 	return (
 		<ColorSchemeProvider colorScheme={preferredColorScheme} toggleColorScheme={toggleColorScheme}>
 			<MantineProvider

@@ -2,11 +2,17 @@ import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import NotFound from "./pages/NotFound";
+import AuthenticatedRoute from "./AuthenticatedRoute";
+import Signup from "./pages/auth/Signup";
 
 const AppRouter = createBrowserRouter([
 	{
 		path: "/",
-		element: <Home />,
+		element: (
+			<AuthenticatedRoute>
+				<Home />
+			</AuthenticatedRoute>
+		),
 	},
 	{
 		path: "/auth/login",
@@ -14,7 +20,7 @@ const AppRouter = createBrowserRouter([
 	},
 	{
 		path: "/auth/signup",
-		element: <Login />,
+		element: <Signup />,
 	},
 	{
 		path: "*",
