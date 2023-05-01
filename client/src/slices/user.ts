@@ -7,13 +7,15 @@ export const UserSlice = createSlice({
 		auth: {
 			access_token: localStorage.getItem("access_token") || "",
 		},
+		isLoggedin: false,
 	} as IUser,
 	reducers: {
 		setAccessToken: (state, { payload }) => {
 			state.auth.access_token = payload;
-			if (payload.token) {
-				localStorage.setItem("access_token", payload.token);
-			}
+			localStorage.setItem("access_token", payload);
+		},
+		setLoggedin: (state, { payload }) => {
+			state.isLoggedin = payload;
 		},
 		destroyAuth: (state) => {
 			delete state.auth.access_token;
