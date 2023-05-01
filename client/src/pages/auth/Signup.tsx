@@ -1,5 +1,5 @@
 import { useForm, isEmail, isNotEmpty } from "@mantine/form";
-import { TextInput, PasswordInput, Text, Paper, Group, PaperProps, Button, Anchor, Stack, Container, Title, Box } from "@mantine/core";
+import { TextInput, PasswordInput, Text, Paper, PaperProps, Button, Anchor, Stack, Container, Title, Box } from "@mantine/core";
 import { useCallback, useState } from "react";
 import ErrorMessages from "../../components/ErrorMessages";
 import { IErrorMessageResponse } from "../../components/types";
@@ -9,7 +9,7 @@ import { UserActions } from "../../slices/user";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
-const Login = (props: PaperProps) => {
+const Signup = (props: PaperProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errors, setErrors] = useState<IErrorMessageResponse>();
 	const dispatch = useDispatch();
@@ -18,11 +18,13 @@ const Login = (props: PaperProps) => {
 
 	const form = useForm({
 		initialValues: {
+			name: "",
 			email: "",
 			password: "",
 		},
 
 		validate: {
+			name: isNotEmpty("Full Name is required"),
 			email: isEmail("Invalid email address"),
 			password: isNotEmpty("Password is required"),
 		},
@@ -32,13 +34,14 @@ const Login = (props: PaperProps) => {
 		setErrors(undefined);
 		setLoading(true);
 		api.auth
-			.login(form.values)
+			.register(form.values)
 			.then((response) => {
 				dispatch(UserActions.setAccessToken(response.data.access_token));
+				dispatch(UserActions.setLoggedin(true));
 			})
 			.catch((error) => {
-				if (error?.response?.data?.message) {
-					setErrors({ invalid_auth: error.response.data.message });
+				if (error?.response?.data?.errors) {
+					setErrors(error.response.data.errors);
 				} else {
 					setErrors({ bad_request: "Something went wrong, please try again later." });
 				}
@@ -51,17 +54,17 @@ const Login = (props: PaperProps) => {
 	return (
 		<>
 			<Helmet>
-				<title>Login - Adflix</title>
+				<title>Signup - Adflix</title>
 			</Helmet>
 			<Container size="xs" my={90}>
 				<Title align="center" sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}>
 					adflix
 				</Title>
 				<Text color="dimmed" size="sm" align="center" mt={5}>
-					Do not have an account yet?{" "}
-					<Link to="/auth/signup">
+					Do you already have an account?{" "}
+					<Link to="/auth/login">
 						<Anchor size="sm" component="button">
-							Create account
+							Login
 						</Anchor>
 					</Link>
 				</Text>
@@ -74,6 +77,18 @@ const Login = (props: PaperProps) => {
 
 					<form onSubmit={form.onSubmit(() => handleSubmit())}>
 						<Stack>
+							<TextInput
+								required
+								label="Full Name"
+								placeholder="Your full name"
+								value={form.values.name}
+								onChange={(event) => form.setFieldValue("name", event.currentTarget.value)}
+								error={form.errors.name}
+								labelProps={{
+									mb: "xs",
+								}}
+								disabled={loading}
+							/>
 							<TextInput
 								required
 								label="Email"
@@ -101,14 +116,8 @@ const Login = (props: PaperProps) => {
 							/>
 						</Stack>
 
-						<Group position="apart" mt="lg">
-							<div></div>
-							<Anchor component="button" size="sm">
-								Forgot password?
-							</Anchor>
-						</Group>
 						<Button fullWidth mt="xl" type="submit" loading={loading}>
-							Sign in
+							Signup
 						</Button>
 					</form>
 				</Paper>
@@ -117,4 +126,4 @@ const Login = (props: PaperProps) => {
 	);
 };
 
-export default Login;
+export default Signup;

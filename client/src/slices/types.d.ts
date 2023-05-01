@@ -8,7 +8,8 @@ export type ColorScheme = {
 
 
 export interface IUser {
-  auth: Auth
+  auth: Auth,
+  isLoggedin: boolean;
 }
 
 
