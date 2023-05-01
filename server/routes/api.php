@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ClickController;
 use App\Http\Controllers\User\LinkController;
@@ -26,7 +27,6 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::get('logout', [AuthController::class, 'logout']);
-        Route::get('user', [AuthController::class, 'user']);
     });
 
     Route::prefix('links')->group(function () {
@@ -43,5 +43,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('clicks')->group(function () {
         Route::get('/', [ClickController::class, 'list']);
+    });
+
+    Route::prefix('account')->group(function(){
+        Route::get('/', [AccountController::class, 'get']);
     });
 });
