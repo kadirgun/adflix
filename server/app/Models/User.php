@@ -30,11 +30,19 @@ class User extends Authenticatable {
         'status' => UserStatus::class,
     ];
 
+    protected $appends = [
+        'verified',
+    ];
+
     public function links() {
         return $this->hasMany(Link::class);
     }
 
     public function clicks(){
         return $this->hasMany(Click::class);
+    }
+
+    public function getVerifiedAttribute() {
+        return $this->hasVerifiedEmail();
     }
 }
