@@ -14,7 +14,7 @@ services:
     build:
       context: ./client
     ports:
-      - "3000:3000"
+      - ${DOCKER_VITE_PORT}:3000
     volumes:
       - ./client:/app/client
       - ./.env:/app/client/.env
@@ -25,6 +25,8 @@ services:
     build: ./python
     env_file:
       - .env
+    environment:
+      - PWD=${PWD}
   
   server:
     build:
