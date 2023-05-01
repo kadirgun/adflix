@@ -17,21 +17,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('auth')->group(function(){
+Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
+    Route::get('verify', [AuthController::class, 'verify']);
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::get('logout', [AuthController::class, 'logout']);
+        Route::get('user', [AuthController::class, 'user']);
+    });
 
-Route::middleware('auth:sanctum')->group(function(){
-    Route::get('auth/logout', [AuthController::class, 'logout']);
-    Route::get('auth/user', [AuthController::class, 'user']);
-
-    Route::prefix('links')->group(function(){
+    Route::prefix('links')->group(function () {
         Route::get('/', [LinkController::class, 'list']);
         Route::post('/', [LinkController::class, 'create']);
 
-        Route::prefix('{id}')->group(function(){
+        Route::prefix('{id}')->group(function () {
             Route::get('/', [LinkController::class, 'get']);
             Route::delete('/', [LinkController::class, 'delete']);
             Route::put('/', [LinkController::class, 'update']);
@@ -39,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function(){
         });
     });
 
-    Route::prefix('clicks')->group(function(){
+    Route::prefix('clicks')->group(function () {
         Route::get('/', [ClickController::class, 'list']);
     });
 });

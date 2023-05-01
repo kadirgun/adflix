@@ -23,11 +23,6 @@ class AuthController extends Controller {
             ], 400);
         }
 
-        return route('verification.verify', [
-            'id' => 1,
-            'hash' => sha1("asfasf"),
-        ]);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -69,6 +64,42 @@ class AuthController extends Controller {
 
         return response()->json([
             'message' => 'Logged out',
+        ]);
+    }
+
+    public function verify(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer',
+            'hash' => 'required|string',
+            'expires' => 'required|integer',
+            'signature' => 'required|string',
+        ]);
+
+        if ($validator->fails()){
+            return response()->json([
+                'error' => 'Invalid or Expired url provided',
+            ], 400);
+        }
+
+        $valid = $request->hasValidSignature();
+
+        if (!$valid){
+            return response()->json([
+                'error' => 'Invalid or Expired url provided',
+            ], 400);
+        }
+
+        $user = User::findOrFail($request->id);
+
+        if (!$user->hasVerifiedEmail()){
+            $user->markEmailAsVerified();
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Email verified',
+            'access_token' => $token,
         ]);
     }
 
