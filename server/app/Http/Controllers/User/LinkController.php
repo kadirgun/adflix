@@ -28,7 +28,7 @@ class LinkController extends Controller {
 
         $link = $request->user()->links()->create([
             'target_url' => $request->target_url,
-            'password' => $request->password ? Hash::make($request->password) : null,
+            'password' => $request->password,
             'key' => Str::random(6),
         ]);
 
@@ -79,7 +79,7 @@ class LinkController extends Controller {
 
         $link->update([
             'target_url' => $request->target_url,
-            'password' => $request->password ? Hash::make($request->password) : null,
+            'password' => $request->password,
         ]);
 
         return response()->json($link);
