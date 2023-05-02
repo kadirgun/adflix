@@ -29,7 +29,7 @@ jobs:
     needs: build
     steps:
       - name: Compare .env files
-        run: docker run --rm -v $PWD/.env:/.env -v $PWD/.env.example:/.env.example dotenvlinter/dotenv-linter compare .env .env.example
+        run: sh env.compare.sh
   config:
     runs-on: self-hosted
     needs: compare
