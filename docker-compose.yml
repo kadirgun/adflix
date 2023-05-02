@@ -17,7 +17,7 @@ services:
       - ${DOCKER_NEXT_PORT}:3000
     volumes:
       - ./client:/app/client
-      - ./.env:/app/client/.env
+      - ./.env:/app/client/.env.local
     command: ["sh", "entrypoint.sh"]
     working_dir: /app/client
     env_file:
