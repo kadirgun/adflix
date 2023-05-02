@@ -3,16 +3,16 @@ version: '3.8'
 services:
   redis:
     image: redis:latest
+    restart: always
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
       interval: 5s
       timeout: 5s
       retries: 5
-    restart: always
 
   client:
-    build:
-      context: ./client
+    build: ./client
+    restart: always
     ports:
       - ${DOCKER_NEXT_PORT}:3000
     volumes:
@@ -20,6 +20,11 @@ services:
       - ./.env:/app/client/.env
     command: ["sh", "entrypoint.sh"]
     working_dir: /app/client
+    env_file:
+      - .env
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
 
   python:
     build: ./python
@@ -29,8 +34,8 @@ services:
       - PWD=${PWD}
   
   server:
-    build:
-      context: ./server
+    build: ./server
+    restart: always
     ports:
       #octane server
       - target: 8000
@@ -51,7 +56,6 @@ services:
     dns:
       - 1.1.1.1
       - 1.0.0.1
-    restart: always
 
   db:
     image: mysql:latest

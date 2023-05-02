@@ -23,19 +23,15 @@ jobs:
     - name: Build Docker Compose
       run: docker compose build
     - name: Up Docker Compose
-      run: docker compose up server db redis -d
-  client:
+      run: docker compose up server db redis client -d
+  config:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Run Client Service
-        run: docker compose run -d --rm client /bin/sh
-      - name: Install node modules
-        run: docker compose exec client yarn install
-      - name: Build client
-        run: docker compose exec client yarn build
-      - name: Start ReactNext
-        run: docker compose exec client yarn start
+      - name: Build Config Files
+        run: ./config/setup.sh
+      - name: Reload Nginx Config
+        run: service nginx reload
   laravel:
     runs-on: self-hosted
     needs: build
