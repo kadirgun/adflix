@@ -24,9 +24,15 @@ jobs:
       run: docker compose build
     - name: Up Docker Compose
       run: docker compose up server db redis client -d
-  config:
+  compare:
     runs-on: self-hosted
     needs: build
+    steps:
+      - name: Compare .env files
+        run: sh env.compare.sh
+  config:
+    runs-on: self-hosted
+    needs: compare
     steps:
       - name: Build Config Files
         run: ./config/setup.sh
@@ -34,7 +40,7 @@ jobs:
         run: service nginx reload
   laravel:
     runs-on: self-hosted
-    needs: build
+    needs: compare
     steps:
       - name: Install composer dependencies
         run: docker compose exec server composer install
