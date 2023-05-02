@@ -1,2 +1,3 @@
 nginx.conf
+nginx.dev.conf
 ssl
