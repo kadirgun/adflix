@@ -14,7 +14,7 @@ services:
     build:
       context: ./client
     ports:
-      - ${DOCKER_VITE_PORT}:3000
+      - ${DOCKER_NEXT_PORT}:3000
     volumes:
       - ./client:/app/client
       - ./.env:/app/client/.env

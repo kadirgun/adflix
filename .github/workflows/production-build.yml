@@ -34,8 +34,8 @@ jobs:
         run: docker compose exec client yarn install
       - name: Build client
         run: docker compose exec client yarn build
-      - name: Stop Client Service
-        run: docker compose stop client
+      - name: Start ReactNext
+        run: docker compose exec client yarn start
   laravel:
     runs-on: self-hosted
     needs: build
