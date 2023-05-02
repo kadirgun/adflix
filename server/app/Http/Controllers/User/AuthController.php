@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller {
     public function register(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:3|max:25',
+            'first_name' => 'required|string|min:2|max:25',
+            'last_name' => 'required|string|min:2|max:25',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|max:25',
+            'password' => 'required|string|confirmed|min:6',
         ]);
 
         if ($validator->fails()) {
@@ -41,7 +42,7 @@ class AuthController extends Controller {
     public function login(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required|string|min:8|max:25',
+            'password' => 'required|string|min:6',
         ]);
 
         $user = User::where('email', $request->email)->first();

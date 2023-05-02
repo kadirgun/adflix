@@ -16,7 +16,8 @@ class UserSeeder extends Seeder
         $user = User::firstOrCreate([
             'id' => 1
         ], [
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
             'email' => 'test@gmail.com',
             'password' => bcrypt('123456789'),
         ]);
