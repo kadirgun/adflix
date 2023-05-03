@@ -26,10 +26,4 @@ const App = (props: AppPropsWithLayout) => {
 	);
 }
 
-App.getInitialProps = async ({ Component, router }: AppProps) => {
-	console.log(router);
-
-	return {}
-}
-
 export default App;

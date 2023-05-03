@@ -1,10 +1,9 @@
 import { useAppSelector } from "@/slices/store";
-import { useRouter } from "next/router";
+import { NextRouter } from "next/router";
 import { useEffect } from "react";
 
-export default () => {
+export default (router: NextRouter) => {
   const auth = useAppSelector((state) => state.user.auth);
-  const router = useRouter();
   
   useEffect(() => {
     if (auth.access_token) {
