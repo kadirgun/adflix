@@ -1,13 +1,17 @@
 import Link from "next/link";
 
 import { useForm, isEmail, isNotEmpty } from "@mantine/form";
-import { TextInput, PasswordInput, Text, Paper, Group, PaperProps, Button, Anchor, Stack, Container, Title, Box } from "@mantine/core";
+import { TextInput, PasswordInput, Text, Paper, Group, PaperProps, Button, Anchor, Stack, Container, Title, Box, rem } from "@mantine/core";
 import { useCallback, useState } from "react";
 import ErrorMessages from "../../components/ErrorMessages";
 import { IErrorMessageResponse } from "../../components/types";
 import { useApi } from "../../hooks";
 import { useDispatch } from "react-redux";
 import { UserActions } from "../../slices/user";
+import Head from "next/head";
+import { IconAt, IconLock } from "@tabler/icons-react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const Login = (props: PaperProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
@@ -50,9 +54,12 @@ const Login = (props: PaperProps) => {
 
 	return (
 		<>
-			<Container size="xs" my={90}>
+			<Head>
+				<title>Login - Adflix</title>
+			</Head>
+			<Container size="xs" mt={rem(120)}>
 				<Title align="center" sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}>
-					adflix
+					Welcome back!
 				</Title>
 				<Text color="dimmed" size="sm" align="center" mt={5}>
 					Do not have an account yet?{" "}
@@ -74,34 +81,38 @@ const Login = (props: PaperProps) => {
 							<TextInput
 								required
 								label="Email"
-								placeholder="mail@mail.com"
+								placeholder="Enter your email address"
 								value={form.values.email}
 								onChange={(event) => form.setFieldValue("email", event.currentTarget.value)}
 								error={form.errors.email}
 								labelProps={{
 									mb: "xs",
 								}}
+								mb="xs"
 								disabled={loading}
+								icon={<IconAt size="1rem" />}
 							/>
 
 							<PasswordInput
 								required
 								label="Password"
-								placeholder="Your password"
+								placeholder="Enter your password"
 								value={form.values.password}
 								onChange={(event) => form.setFieldValue("password", event.currentTarget.value)}
 								error={form.errors.password}
 								labelProps={{
 									mb: "xs",
 								}}
+								mb="sm"
 								disabled={loading}
+								icon={<IconLock size="1rem" />}
 							/>
 						</Stack>
 
-						<Group position="apart" mt="lg">
+						<Group position="apart" mb="xs">
 							<div></div>
 							<Anchor component="button" size="sm">
-								Forgot password?
+								Forgot Password?{" "}
 							</Anchor>
 						</Group>
 						<Button fullWidth mt="xl" type="submit" loading={loading}>
@@ -109,6 +120,13 @@ const Login = (props: PaperProps) => {
 						</Button>
 					</form>
 				</Paper>
+				<Group position="center" mt={rem(45)}>
+					<Link href="/">
+						<Anchor component="button" size="sm">
+							Back to home page
+						</Anchor>
+					</Link>
+				</Group>
 			</Container>
 		</>
 	);

@@ -12,10 +12,9 @@ export default function App(props: AppProps) {
 			<ReduxProvider store={store}>
 				<PersistGate loading={null} persistor={persistor}>
 					<Head>
-						<title>Page title</title>
+						<title>Adflix</title>
 						<meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
 					</Head>
-
 					<Provider>
 						<Component {...pageProps} />
 					</Provider>
