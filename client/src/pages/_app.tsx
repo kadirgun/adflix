@@ -4,9 +4,11 @@ import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "@/slices/store";
 import Provider from "./_provider";
+import { AppPropsWithLayout } from "./types";
 
-export default function App(props: AppProps) {
+export default function App(props: AppPropsWithLayout) {
 	const { Component, pageProps } = props;
+	const getLayout = Component.getLayout || ((page) => page);
 	return (
 		<>
 			<ReduxProvider store={store}>
@@ -16,7 +18,7 @@ export default function App(props: AppProps) {
 						<meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
 					</Head>
 					<Provider>
-						<Component {...pageProps} />
+						{getLayout(<Component {...pageProps} />)}
 					</Provider>
 				</PersistGate>
 			</ReduxProvider>

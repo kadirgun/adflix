@@ -22,7 +22,7 @@ class ClickController extends Controller {
             'from' => 'required|date',
             'to' => 'required|date',
             'filters' => 'nullable|array',
-            'group' => 'nullable|in:country,platform,os,browser,date'
+            'group' => 'nullable|in:country,platform,os,browser'
         ]);
 
         if ($validator->fails()) {

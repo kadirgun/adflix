@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { useForm, isEmail, isNotEmpty, matchesField } from "@mantine/form";
 import { TextInput, PasswordInput, Text, Paper, PaperProps, Button, Anchor, Stack, Container, Title, Box, Checkbox, Group, rem } from "@mantine/core";
-import { useCallback, useState } from "react";
+import { ReactElement, useCallback, useState } from "react";
 import ErrorMessages from "../../components/ErrorMessages";
 import { IErrorMessageResponse } from "../../components/types";
 import { useApi } from "../../hooks";
@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { UserActions } from "../../slices/user";
 import { IconAt, IconLock } from "@tabler/icons-react";
 import Head from "next/head";
+import AuthLayout from "@/layouts/AuthLayout";
 
 const Signup = (props: PaperProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
@@ -186,5 +187,7 @@ const Signup = (props: PaperProps) => {
 		</>
 	);
 };
+
+Signup.getLayout = (page: ReactElement) => <AuthLayout>{page}</AuthLayout>;
 
 export default Signup;

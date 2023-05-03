@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../slices/store";
-import { UserActions } from "../slices/user";
+import { useAppSelector } from "@/slices/store";
+import { UserActions } from "@/slices/user";
 
 const useAxios = () => {
 	const auth = useAppSelector((state) => state.user.auth);
