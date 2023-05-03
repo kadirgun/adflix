@@ -6,7 +6,7 @@ import { store, persistor } from "@/slices/store";
 import Provider from "./_provider";
 import { AppPropsWithLayout } from "./types";
 
-export default function App(props: AppPropsWithLayout) {
+const App = (props: AppPropsWithLayout) => {
 	const { Component, pageProps } = props;
 	const getLayout = Component.getLayout || ((page) => page);
 	return (
@@ -25,3 +25,11 @@ export default function App(props: AppPropsWithLayout) {
 		</>
 	);
 }
+
+App.getInitialProps = async ({ Component, router }: AppProps) => {
+	console.log(router);
+
+	return {}
+}
+
+export default App;
