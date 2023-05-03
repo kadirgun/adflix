@@ -13,5 +13,6 @@ class Click extends Model
     protected $guarded = ['id'];
     protected $casts = [
         'status' => ClickStatus::class,
+        'earnings' => 'float',
     ];
 }

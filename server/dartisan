@@ -1,0 +1,5 @@
+#!/bin/bash
+
+args="$@"
+echo "$args"
+docker compose exec server php artisan "$@"

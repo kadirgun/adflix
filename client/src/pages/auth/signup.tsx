@@ -49,7 +49,9 @@ const Signup = (props: PaperProps) => {
 			})
 			.catch((error) => {
 				if (error?.response?.data?.errors) {
-					setErrors(error.response.data.errors);
+					form.setErrors(error.response.data.errors);
+				} else if(error?.response?.data?.error){
+					setErrors({ bad_request: error.response.data.error });
 				} else {
 					setErrors({ bad_request: "Something went wrong, please try again later." });
 				}

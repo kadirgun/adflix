@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('clicks')->group(function () {
         Route::get('/', [ClickController::class, 'list']);
+        Route::post('report', [ClickController::class, 'report']);
     });
 
     Route::prefix('account')->group(function(){
