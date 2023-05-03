@@ -33,7 +33,7 @@ class ClickController extends Controller {
         }
 
         /**
-         * @var \Illuminate\Database\Eloquent\Builder $builder
+         * @var \Illuminate\Database\Query\Builder $builder
          */
 
         $builder = Click::query()
@@ -46,7 +46,7 @@ class ClickController extends Controller {
             $builder->addSelect($request->group);
             $builder->groupBy($request->group);
         } else {
-            $builder->addSelect('DATE(created_at) as date');
+            $builder->addSelect(DB::raw('DATE(created_at) as date'));
             $builder->groupBy('date');
         }
 
