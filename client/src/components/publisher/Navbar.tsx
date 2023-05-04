@@ -53,19 +53,13 @@ const useStyles = createStyles((theme) => ({
     paddingBottom: 0,
   },
 
-  links: {
-    marginLeft: `calc(${theme.spacing.md} * -1)`,
-    marginRight: `calc(${theme.spacing.md} * -1)`,
-  },
-
   linksInner: {
     paddingTop: theme.spacing.xs,
     paddingBottom: theme.spacing.xs,
   },
 
   footer: {
-    marginLeft: `calc(${theme.spacing.md} * -1)`,
-    marginRight: `calc(${theme.spacing.md} * -1)`,
+    paddingTop: theme.spacing.xs,
     borderTop: `${rem(1)} solid ${
       theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
@@ -77,8 +71,8 @@ const Navbar = () => {
   const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
-    <MantineNavbar width={{ sm: 300 }} p="md" className={classes.navbar}>
-      <MantineNavbar.Section grow className={classes.links} component={ScrollArea}>
+    <MantineNavbar width={{ sm: 300 }} px="xs" pb="xs" className={classes.navbar}>
+      <MantineNavbar.Section grow component={ScrollArea}>
         <div className={classes.linksInner}>{links}</div>
       </MantineNavbar.Section>
 

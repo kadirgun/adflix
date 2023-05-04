@@ -17,10 +17,10 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 500,
     display: 'block',
     width: '100%',
-    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+    padding: theme.spacing.xs,
     color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
     fontSize: theme.fontSizes.sm,
-
+    borderRadius: 6,
     '&:hover': {
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
       color: theme.colorScheme === 'dark' ? theme.white : theme.black,
@@ -31,7 +31,7 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 500,
     display: 'block',
     textDecoration: 'none',
-    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+    padding: `${theme.spacing.xs} ${theme.spacing.xs}`,
     paddingLeft: rem(31),
     marginLeft: rem(30),
     fontSize: theme.fontSizes.sm,
@@ -41,7 +41,6 @@ const useStyles = createStyles((theme) => ({
     }`,
 
     '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
       color: theme.colorScheme === 'dark' ? theme.white : theme.black,
     },
   },
@@ -52,7 +51,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: ILinksGroupProps) {
+export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }: ILinksGroupProps) => {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
