@@ -17,7 +17,7 @@ const ErrorMessages = ({ messages }: Props) => {
 	const strings = Object.keys(messages).map((item) => messages[item])[0];
 
 	return (
-		<Alert icon={<IconAlertCircle size="1rem" />} title="Error!" color="red">
+		<Alert icon={<IconAlertCircle size="1rem" />} color="red">
 			<Stack>
 				{Array.isArray(strings) &&
 					strings.map((string, index) => {
