@@ -36,8 +36,6 @@ jobs:
     steps:
       - name: Build Config Files
         run: ./config/setup.sh
-      - name: Reload Nginx Config
-        run: service nginx reload
   laravel:
     runs-on: self-hosted
     needs: compare
