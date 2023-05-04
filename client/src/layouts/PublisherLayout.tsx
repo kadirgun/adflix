@@ -10,7 +10,7 @@ const PublisherLayout = ({ children }: any) => {
 	const router = useRouter();
 
 	useEffect(() => {
-		if (!auth.isLoggedin) {
+		if (!auth.isLoggedin && auth.access_token !== "") {
 			router.replace({
 				pathname: "/publisher/auth/login",
 				query: { redirected_from: router.pathname },

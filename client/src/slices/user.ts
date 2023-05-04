@@ -16,7 +16,7 @@ export const UserSlice = createSlice({
 			state.auth.isLoggedin = true;
 		},
 		destroyAuth: (state) => {
-			delete state.auth.access_token;
+			state.auth.access_token = "";
 			state.auth.isLoggedin = false;
 		},
 		setAccount: (state, { payload }) => {
