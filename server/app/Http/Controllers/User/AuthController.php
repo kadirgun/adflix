@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User\AccountResource;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
@@ -103,9 +104,5 @@ class AuthController extends Controller {
             'message' => 'Email verified',
             'access_token' => $token,
         ]);
-    }
-
-    public function user(){
-        return response()->json(auth()->user());
     }
 }
