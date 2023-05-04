@@ -3,9 +3,12 @@ import { AppShell as MantineAppShell, Header, Group, ActionIcon, useMantineColor
 import { IconLayoutSidebarLeftCollapse, IconLayoutSidebarLeftExpand, IconMoon, IconSun } from "@tabler/icons-react";
 import Navbar from "@/components/publisher/Navbar";
 import Logo from "@/components/Logo";
+import { useUi } from "@/hooks";
+import { useColorScheme } from "@mantine/hooks";
 
 const AppShell = ({ children }: any) => {
-	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+	const ui = useUi();
+	const colorScheme = ui?.colorScheme || useColorScheme();
 	const [sidebar, setSidebar] = useState<boolean>(true);
 	const dark = colorScheme === "dark";
 
@@ -35,7 +38,7 @@ const AppShell = ({ children }: any) => {
 								)}
 							</ActionIcon>
 
-							<ActionIcon variant="default" size="2rem" radius="md" onClick={() => toggleColorScheme()}>
+							<ActionIcon variant="default" size="2rem" radius="md" onClick={() => ui.setColorScheme(colorScheme === "dark" ? "light" : "dark")}>
 								{dark ? (
 									<Tooltip label="Disable dark mode">
 										<IconSun size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
