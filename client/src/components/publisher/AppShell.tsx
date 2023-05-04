@@ -18,31 +18,31 @@ const AppShell = ({ children }: any) => {
 			padding="md"
 			navbar={sidebar ? <Navbar /> : <></>}
 			header={
-				<Header height={rem(60)} p="xs">
+				<Header height={rem(60)}>
 					<Group sx={{ height: "100%", width: "100%" }} px={20} position="apart">
-						<Logo width={rem(120)} />
+						<Logo width={rem(110)} />
 
 						<Group position={"right"}>
-							<ActionIcon variant="default" size="lg" radius="md" onClick={toggleSideBar}>
+							<ActionIcon variant="default" size="2rem" radius="md" onClick={toggleSideBar}>
 								{sidebar ? (
 									<Tooltip label="Hide menu">
-										<IconLayoutSidebarLeftCollapse size="1.375rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+										<IconLayoutSidebarLeftCollapse size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
 									</Tooltip>
 								) : (
 									<Tooltip label="Show menu">
-										<IconLayoutSidebarLeftExpand size="1.375rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+										<IconLayoutSidebarLeftExpand size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
 									</Tooltip>
 								)}
 							</ActionIcon>
 
-							<ActionIcon variant="default" size="lg" radius="md" onClick={() => toggleColorScheme()}>
+							<ActionIcon variant="default" size="2rem" radius="md" onClick={() => toggleColorScheme()}>
 								{dark ? (
 									<Tooltip label="Disable dark mode">
-										<IconSun size="1.375rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+										<IconSun size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
 									</Tooltip>
 								) : (
 									<Tooltip label="Enable dark mode">
-										<IconMoon size="1.375rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+										<IconMoon size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
 									</Tooltip>
 								)}
 							</ActionIcon>
