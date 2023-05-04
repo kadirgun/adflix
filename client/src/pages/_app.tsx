@@ -1,4 +1,3 @@
-import { AppProps } from "next/app";
 import Head from "next/head";
 import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";

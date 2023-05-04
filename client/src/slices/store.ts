@@ -1,15 +1,11 @@
-import type { Reducer } from "@reduxjs/toolkit";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, persistStore } from "redux-persist";
 import { getPersistConfig } from "redux-deep-persist";
-import hardSet from "redux-persist/lib/stateReconciler/hardSet";
 
 import user from "./user";
 import ui from "./ui";
-
-type CombinedState = typeof rootReducer extends Reducer<infer U, any> ? U : never;
 
 const rootReducer = combineReducers({
 	user,
@@ -17,14 +13,13 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = getPersistConfig({
+	keyPrefix: "app_",
 	key: "root",
 	storage,
 	version: 1,
-	whitelist: ["user.auth.access_token", "ui"],
+	whitelist: ["user.auth", "ui.colorScheme"],
 	rootReducer,
 });
-
-persistConfig.stateReconciler = hardSet as (inboundState: CombinedState) => CombinedState;
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

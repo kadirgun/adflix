@@ -1,7 +1,7 @@
 import { ILogin, IRegister } from "./api.types";
 import useAxios from "./useAxios";
 
-const useApi = () => {
+export default () => {
 	const axios = useAxios();
 
 	const api = {
@@ -11,6 +11,11 @@ const useApi = () => {
       },
       register: async (params: IRegister) => {
         return await axios.post("/auth/register", params)
+      },
+    },
+    account: {
+      info: async () => {
+        return await axios.get("/account")
       }
     }
   }
@@ -18,4 +23,3 @@ const useApi = () => {
 	return api;
 };
 
-export default useApi;
