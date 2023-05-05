@@ -16,8 +16,8 @@ class LinkController extends Controller {
 
     public function create(Request $request) {
         $validator = Validator::make($request->all(), [
-            'target_url' => 'required|url',
-            'password' => 'nullable|string|min:8|max:25',
+            'target' => 'required|url',
+            'password' => 'nullable|string|min:4|max:25',
             'type' => 'nullable|integer|between:1,3'
         ]);
 
@@ -28,7 +28,7 @@ class LinkController extends Controller {
         }
 
         $link = $request->user()->links()->create([
-            'target_url' => $request->target_url,
+            'target' => $request->target,
             'password' => $request->password,
             'key' => Str::random(6),
         ]);
@@ -66,7 +66,7 @@ class LinkController extends Controller {
 
     public function update(Request $request, $id){
         $validator = Validator::make($request->all(), [
-            'target_url' => 'required|url',
+            'target' => 'required|url',
             'password' => 'nullable|string|min:8|max:25',
         ]);
 
@@ -79,7 +79,7 @@ class LinkController extends Controller {
         }
 
         $link->update([
-            'target_url' => $request->target_url,
+            'target' => $request->target,
             'password' => $request->password,
         ]);
 

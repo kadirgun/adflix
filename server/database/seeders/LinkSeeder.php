@@ -18,7 +18,7 @@ class LinkSeeder extends Seeder
             'id' => 1
         ], [
             'user_id' => 1,
-            'target_url' => 'https://google.com',
+            'target' => 'https://google.com',
             'key' => Str::random(6)
         ]);
     }
