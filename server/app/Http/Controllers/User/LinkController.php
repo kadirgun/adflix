@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\ClickResource;
+use App\Http\Resources\User\LinkResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -11,13 +12,15 @@ use Illuminate\Support\Str;
 
 class LinkController extends Controller {
     public function list(Request $request) {
-        return response()->json($request->user()->links);
+        return response()->json(LinkResource::collection($request->user()->links));
     }
 
     public function create(Request $request) {
         $validator = Validator::make($request->all(), [
-            'target_url' => 'required|url',
-            'password' => 'nullable|string|min:8|max:25',
+            'target' => 'required|url',
+            'password' => 'nullable|string|min:4|max:25',
+            'type' => 'nullable|integer|between:1,3',
+            'excludes' => 'nullable|array',
         ]);
 
         if ($validator->fails()) {
@@ -27,12 +30,13 @@ class LinkController extends Controller {
         }
 
         $link = $request->user()->links()->create([
-            'target_url' => $request->target_url,
+            'target' => $request->target,
             'password' => $request->password,
             'key' => Str::random(6),
+            'excludes' => $request->excludes,
         ]);
 
-        return response()->json($link);
+        return response()->json(new LinkResource($link));
     }
 
     public function get($id){
@@ -44,7 +48,7 @@ class LinkController extends Controller {
             ], 404);
         }
 
-        return response()->json($link);
+        return response()->json(new LinkResource($link));
     }
 
     public function delete($id){
@@ -65,8 +69,9 @@ class LinkController extends Controller {
 
     public function update(Request $request, $id){
         $validator = Validator::make($request->all(), [
-            'target_url' => 'required|url',
+            'target' => 'required|url',
             'password' => 'nullable|string|min:8|max:25',
+            'excludes' => 'nullable|array',
         ]);
 
         $link = $request->user()->links()->where('id', $id)->first();
@@ -78,8 +83,9 @@ class LinkController extends Controller {
         }
 
         $link->update([
-            'target_url' => $request->target_url,
+            'target' => $request->target,
             'password' => $request->password,
+            'excludes' => $request->excludes,
         ]);
 
         return response()->json($link);

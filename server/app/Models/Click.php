@@ -6,8 +6,7 @@ use App\Enums\ClickStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Click extends Model
-{
+class Click extends Model {
     use HasFactory;
 
     protected $guarded = ['id'];
@@ -15,4 +14,12 @@ class Click extends Model
         'status' => ClickStatus::class,
         'earnings' => 'float',
     ];
+
+    public function link() {
+        return $this->belongsTo(Link::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

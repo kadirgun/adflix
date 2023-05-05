@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ClickController extends Controller {
     public function list() {
-        $clicks = auth()->user()->clicks()->where('status', ClickStatus::Approved)->get();
+        $clicks = auth()->user()->clicks()->where('status', ClickStatus::Approved)->limit(1000)->get();
 
         return response()->json(ClickResource::collection($clicks));
     }

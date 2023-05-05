@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Doe',
             'email' => 'test@gmail.com',
             'password' => bcrypt('123456789'),
+            'email_verified_at' => now(),
         ]);
 
         $user->tokens()->firstOrCreate([
