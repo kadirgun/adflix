@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\User\ClickResource;
 use App\Http\Resources\User\LinkResource;
 use App\Rules\ExcludesRule;
+use App\Rules\LinkTargetRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +19,7 @@ class LinkController extends Controller {
 
     public function create(Request $request) {
         $validator = Validator::make($request->all(), [
-            'target' => 'required|url',
+            'target' => ['required', 'url', new LinkTargetRule],
             'password' => 'nullable|string|min:4|max:25',
             'type' => 'nullable|integer|between:1,3',
             'excludes' => ['nullable', new ExcludesRule],

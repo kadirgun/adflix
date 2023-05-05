@@ -1,17 +1,10 @@
 import AuthLayout from "@/layouts/AuthLayout";
 import {
-  TextInput,
-  PasswordInput,
   Text,
-  Paper,
-  Group,
   PaperProps,
   Button,
-  Anchor,
   Stack,
   Title,
-  Box,
-  Notification,
   Card,
   Container,
   Loader,
@@ -19,10 +12,8 @@ import {
 } from "@mantine/core";
 import Head from "next/head";
 import React, { ReactElement, useEffect, useState } from "react";
-import ErrorMessages from "@/components/ErrorMessages";
-import { IErrorMessageResponse } from "@/components/types";
 import { useRouter } from "next/router";
-import { IconMail, IconMailCheck, IconMailX, IconX } from "@tabler/icons-react";
+import { IconMailCheck, IconMailX } from "@tabler/icons-react";
 import { useApi } from "@/hooks";
 import Link from "next/link";
 
@@ -103,17 +94,16 @@ export const Verify = (props: PaperProps) => {
               </Text>
 
               {status !== "loading" && (
-                <Link href="/publisher">
-                  <Button
-                    variant="light"
-                    color="blue"
-                    component="button"
-                    fullWidth
-                    mt="md"
-                    radius="md">
-                    Go to Dashboard
-                  </Button>
-                </Link>
+                <Button
+                  component={Link}
+                  href="/publisher"
+                  variant="light"
+                  color="blue"
+                  fullWidth
+                  mt="md"
+                  radius="md">
+                  Go to Dashboard
+                </Button>
               )}
             </Stack>
           </Card>
