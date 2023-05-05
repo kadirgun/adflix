@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->decimal('earnings', 10, 4)->default(0);
             $table->integer('clicks')->default(0);
-            $table->json('allowed_types')->nullable();
+            $table->string('excludes')->default('[]');
             $table->softDeletes();
             $table->timestamps();
         });
