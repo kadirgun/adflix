@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\User;
 
+use App\Helpers\UserSettingsHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -27,7 +28,8 @@ class AccountResource extends JsonResource
     public function toArray(Request $request): array
     {
         $this->user->setHidden([...$this->user->getHidden(), 'id', 'email_verified_at', 'status', 'updated_at']);
-        
+        $this->user->settings = UserSettingsHelper::parse($this->user->settings);
+
         return $this->user->toArray();
     }
 }
