@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/auth/verify')->name('verification.verify');
+Route::get('/publisher/auth/verify')->name('verification.verify');

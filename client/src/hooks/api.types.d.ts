@@ -11,6 +11,13 @@ export interface IRegister {
   password_confirmation: string;
 }
 
+export interface IVerify {
+  id: string;
+  hash: string;
+  expires: string;
+  signature: string;
+}
+
 export interface ICreateLink {
   target: string;
   password: string;

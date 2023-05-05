@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller {
@@ -84,20 +85,25 @@ class AuthController extends Controller {
             ], 400);
         }
 
-        $valid = $request->hasValidSignature();
+        $signedRequest = Request::create(route('verification.verify', $request->all()));
+        $valid = URL::hasCorrectSignature($signedRequest);
 
         if (!$valid){
             return response()->json([
-                'error' => 'Invalid or Expired url provided',
+                'error' => 'Invalid or expired url provided',
             ], 400);
         }
 
         $user = User::findOrFail($request->id);
 
-        if (!$user->hasVerifiedEmail()){
-            $user->markEmailAsVerified();
+        if ($user->hasVerifiedEmail()){
+            return response()->json([
+                'error' => 'Email already verified',
+            ], 400);
         }
 
+        $user->markEmailAsVerified();
+        
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([

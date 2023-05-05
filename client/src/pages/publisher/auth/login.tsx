@@ -49,8 +49,8 @@ const Login = (props: PaperProps) => {
 				dispatch(UserActions.setAccessToken(response.data.access_token));
 			})
 			.catch((error) => {
-				if (error?.response?.data?.message) {
-					setErrors({ invalid_auth: error.response.data.message });
+				if (error?.response?.data?.error) {
+					setErrors({ invalid_auth: error.response.data.error });
 				} else {
 					setErrors({ bad_request: "Something went wrong, please try again later." });
 				}

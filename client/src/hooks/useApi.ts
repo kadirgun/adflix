@@ -1,4 +1,4 @@
-import { ILogin, IRegister, ICreateLink } from "./api.types";
+import { ILogin, IRegister, ICreateLink, IVerify } from "./api.types";
 import useAxios from "./useAxios";
 
 export default () => {
@@ -11,6 +11,9 @@ export default () => {
       },
       register: async (params: IRegister) => {
         return await axios.post("/auth/register", params)
+      },
+      verify: async (params: IVerify) => {
+        return await axios.post("/auth/verify", params)
       },
     },
     account: {
