@@ -1,13 +1,16 @@
+import { getPreferredColorScheme } from "@/helpers/utils";
 import { useAppSelector } from "@/slices/store";
 import { UIMessage } from "@/slices/types";
 import { UIActions } from "@/slices/ui";
+import { ColorScheme } from "@mantine/core";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 const useUi = () => {
 	const ui = useAppSelector((state) => state.ui);
 	const dispatch = useDispatch();
-	
+	const preferredColorScheme: ColorScheme = ui?.colorScheme || getPreferredColorScheme();
+
 	const setAuthLoading = useCallback(
 		(status: boolean) => {
 			dispatch(UIActions.setAuthLoading(status));
@@ -22,6 +25,10 @@ const useUi = () => {
 		[ui.colorScheme]
 	);
 
+	const toggleColorScheme = useCallback(() => {
+		setColorScheme(preferredColorScheme === "dark" ? "light" : "dark");
+	}, [ui.colorScheme]);
+
 	const setMessage = useCallback(
 		(message: UIMessage) => {
 			dispatch(UIActions.setMessage(message));
@@ -35,15 +42,16 @@ const useUi = () => {
 		return message;
 	};
 
-
 	return {
 		...ui,
 		setAuthLoading,
 		setColorScheme,
+		toggleColorScheme,
+		preferredColorScheme,
 		messages: {
 			set: setMessage,
-			get: getMessage
-		}
+			get: getMessage,
+		},
 	};
 };
 

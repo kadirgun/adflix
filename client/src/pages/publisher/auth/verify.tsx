@@ -34,8 +34,7 @@ export const Verify = (props: PaperProps) => {
 
   useEffect(() => {
     if (!id) return;
-    console.log(router.query);
-
+    
     api.auth
       .verify({
         expires: expires?.toString() || "",

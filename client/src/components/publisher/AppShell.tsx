@@ -1,16 +1,13 @@
 import React, { useCallback, useState } from "react";
-import { AppShell as MantineAppShell, Header, Group, ActionIcon, useMantineColorScheme, rem, Tooltip } from "@mantine/core";
+import { AppShell as MantineAppShell, Header, Group, ActionIcon, rem, Tooltip } from "@mantine/core";
 import { IconLayoutSidebarLeftCollapse, IconLayoutSidebarLeftExpand, IconMoon, IconSun } from "@tabler/icons-react";
 import Navbar from "@/components/publisher/Navbar";
 import Logo from "@/components/Logo";
 import { useUi } from "@/hooks";
-import { useColorScheme } from "@mantine/hooks";
 
 const AppShell = ({ children }: any) => {
 	const ui = useUi();
-	const colorScheme = ui?.colorScheme || useColorScheme();
 	const [sidebar, setSidebar] = useState<boolean>(true);
-	const dark = colorScheme === "dark";
 
 	const toggleSideBar = useCallback(() => {
 		setSidebar(!sidebar);
@@ -38,15 +35,8 @@ const AppShell = ({ children }: any) => {
 								)}
 							</ActionIcon>
 
-							<ActionIcon
-								variant="default"
-								size="2rem"
-								radius="md"
-								onClick={() => {
-									ui.setColorScheme(colorScheme === "dark" ? "light" : "dark");
-								}}
-							>
-								{dark ? (
+							<ActionIcon variant="default" size="2rem" radius="md" onClick={ui.toggleColorScheme}>
+								{ui.colorScheme === "dark" ? (
 									<Tooltip label="Disable dark mode">
 										<IconSun size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
 									</Tooltip>
