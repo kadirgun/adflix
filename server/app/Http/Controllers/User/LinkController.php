@@ -18,6 +18,7 @@ class LinkController extends Controller {
         $validator = Validator::make($request->all(), [
             'target_url' => 'required|url',
             'password' => 'nullable|string|min:8|max:25',
+            'type' => 'nullable|integer|between:1,3'
         ]);
 
         if ($validator->fails()) {

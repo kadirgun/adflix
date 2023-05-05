@@ -12,6 +12,12 @@ class Link extends Model
 
     protected $guarded = ['id'];
     protected $hidden = ['password'];
+    protected $casts = [
+        'type' => 'int',
+        'earnings' => 'float',
+        'clicks' => 'int',
+        'allowed_types' => 'array',
+    ];
 
     public function user(){
         return $this->belongsTo(User::class);
