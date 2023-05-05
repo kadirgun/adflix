@@ -6,6 +6,7 @@ import { UIActions } from "@/slices/ui";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/slices/store";
 import RouterTransition from "@/components/RouterTransition";
+import CreateLinkModal from "@/components/publisher/CreateLinkModal";
 
 const Provider = ({ children }: any) => {
 	const ui = useAppSelector((state) => state.ui);
@@ -23,9 +24,10 @@ const Provider = ({ children }: any) => {
 				withNormalizeCSS
 				theme={{
 					colorScheme: preferredColorScheme,
+					focusRing: "never"
 				}}
 			>
-				<ModalsProvider>
+				<ModalsProvider modals={{ createLink: CreateLinkModal }}>
 					<RouterTransition />
 					<Notifications position="top-right" />
 					{children}

@@ -4,20 +4,15 @@ import { IUser } from "./types";
 export const UserSlice = createSlice({
 	name: "User",
 	initialState: {
-		auth: {
-			access_token: "",
-			isLoggedin: false,
-		},
-		account: {}
+		auth: {},
+		account: {},
 	} as IUser,
 	reducers: {
 		setAccessToken: (state, { payload }) => {
 			state.auth.access_token = payload;
-			state.auth.isLoggedin = true;
 		},
 		destroyAuth: (state) => {
-			state.auth.access_token = "";
-			state.auth.isLoggedin = false;
+			delete state.auth.access_token;
 		},
 		setAccount: (state, { payload }) => {
 			state.account = payload;

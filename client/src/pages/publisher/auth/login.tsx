@@ -5,7 +5,7 @@ import { TextInput, PasswordInput, Text, Paper, Group, PaperProps, Button, Ancho
 import { ReactElement, useCallback, useEffect, useState } from "react";
 import ErrorMessages from "@/components/ErrorMessages";
 import { IErrorMessageResponse } from "@/components/types";
-import { useApi } from "@/hooks";
+import { useApi, useUi } from "@/hooks";
 import { useDispatch } from "react-redux";
 import { UserActions } from "@/slices/user";
 import Head from "next/head";
@@ -17,10 +17,11 @@ const Login = (props: PaperProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errors, setErrors] = useState<IErrorMessageResponse>();
 	const dispatch = useDispatch();
+	const ui = useUi();
 	const router = useRouter();
 
 	useEffect(() => {
-		if (router.query?.redirected_from && router.query?.redirected_from.includes("publisher")) {
+		if (ui.messages.get().type === "error") {
 			setErrors({ invalid_auth: "Your session has timed out. Please log in again." });
 		}
 	}, [router.query]);
@@ -118,7 +119,7 @@ const Login = (props: PaperProps) => {
 					<Group position="apart" mb="xs">
 						<div></div>
 						<Anchor component="button" size="sm">
-							Forgot Password?{" "}
+							Forgot Password?
 						</Anchor>
 					</Group>
 					<Button fullWidth mt="xl" type="submit" loading={loading}>

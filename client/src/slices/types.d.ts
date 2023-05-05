@@ -1,8 +1,11 @@
 export type Auth = {
 	access_token?: string | undefined;
-  isLoggedin?: boolean;
 }
 
+export type UIMessage = {
+  type?: "success" | "error" | "warning" | "info" | undefined;
+  message?: string | undefined;
+}
 
 export interface UserInfo {
   first_name?: string;

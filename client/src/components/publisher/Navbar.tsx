@@ -1,90 +1,90 @@
-import { Navbar as MantineNavbar, ScrollArea, createStyles, rem } from '@mantine/core';
-import {
-  IconNotes,
-  IconCalendarStats,
-  IconGauge,
-  IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
-} from '@tabler/icons-react';
-import { LinksGroup } from '@/components/publisher/NavbarLinksGroup';
-import UserButton from '@/components/publisher/UserButton';
+import { useRef } from "react";
+import { Navbar as MantineNavbar, ScrollArea, createStyles, rem, TextInput, Divider, Button } from "@mantine/core";
+import { modals } from "@mantine/modals";
 
-const mockdata = [
-  { label: 'Dashboard', icon: IconGauge },
-  {
-    label: 'Market news',
-    icon: IconNotes,
-    initiallyOpened: true,
-    links: [
-      { label: 'Overview', link: '/' },
-      { label: 'Forecasts', link: '/' },
-      { label: 'Outlook', link: '/' },
-      { label: 'Real time', link: '/' },
-    ],
-  },
-  {
-    label: 'Releases',
-    icon: IconCalendarStats,
-    links: [
-      { label: 'Upcoming releases', link: '/' },
-      { label: 'Previous releases', link: '/' },
-      { label: 'Releases schedule', link: '/' },
-    ],
-  },
-  { label: 'Analytics', icon: IconPresentationAnalytics },
-  { label: 'Contracts', icon: IconFileAnalytics },
-  { label: 'Settings', icon: IconAdjustments },
-  {
-    label: 'Security',
-    icon: IconLock,
-    links: [
-      { label: 'Enable 2FA', link: '/' },
-      { label: 'Change password', link: '/' },
-      { label: 'Recovery codes', link: '/' },
-    ],
-  },
-];
+import LinksGroup from "@/components/publisher/NavbarLinksGroup";
+import UserButton from "@/components/publisher/UserButton";
+import KeyboardShortcut from "@/components/KeyboardShortcut";
+
+import { links } from "@/core/navbar";
+import { IconRocket, IconSearch } from "@tabler/icons-react";
+import { useSpotlight } from "@mantine/spotlight";
+import { isMacOs } from "@/helpers/utils";
 
 const useStyles = createStyles((theme) => ({
-  navbar: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-    paddingBottom: 0,
-  },
+	navbar: {
+		backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
+		paddingBottom: 0,
+	},
 
-  linksInner: {
-    paddingTop: theme.spacing.xs,
-    paddingBottom: theme.spacing.xs,
-  },
+	linksInner: {
+		paddingTop: theme.spacing.xs,
+		paddingBottom: theme.spacing.xs,
+	},
 
-  footer: {
-    paddingTop: theme.spacing.xs,
-    borderTop: `${rem(1)} solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-  },
+	footer: {
+		paddingTop: theme.spacing.xs,
+	},
 }));
 
 const Navbar = () => {
-  const { classes } = useStyles();
-  const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+	const { classes, theme } = useStyles();
+	const routerSearchRef = useRef<any>();
+	const data = links.map((item) => <LinksGroup {...item} key={item.label} />);
+	const spotlight = useSpotlight();
 
-  return (
-    <MantineNavbar width={{ sm: 300 }} px="xs" pb="xs" className={classes.navbar}>
-      <MantineNavbar.Section grow component={ScrollArea}>
-        <div className={classes.linksInner}>{links}</div>
-      </MantineNavbar.Section>
+	if (spotlight.opened) {
+		routerSearchRef.current?.blur();
+	}
 
-      <MantineNavbar.Section className={classes.footer}>
-        <UserButton
-          image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
-          name="Ann Nullpointer"
-          email="anullpointer@yahoo.com"
-        />
-      </MantineNavbar.Section>
-    </MantineNavbar>
-  );
-}
+	const handleCreateLink = () => {
+		modals.openContextModal({
+			modal: "createLink",
+			title: "Create Monetized Short Link",
+			styles: {
+				title: {
+					fontWeight: 600,
+					color: theme.colors.blue[6],
+				}
+			},
+			innerProps: {},
+			size: "md",
+			centered: true,
+			withCloseButton: false,
+			closeOnClickOutside: false,
+			closeOnEscape: false,
+		});
+	};
+
+	return (
+		<MantineNavbar width={{ sm: 300 }} px="xs" pb="xs" className={classes.navbar}>
+			<Button size="xs" leftIcon={<IconRocket size={rem(15)} />} variant="gradient" my="md" mx="xs" onClick={handleCreateLink}>
+				Create Link
+			</Button>
+			<TextInput
+				ref={routerSearchRef}
+				placeholder="Search page..."
+				size="xs"
+				icon={<IconSearch size={12} />}
+				rightSectionWidth={70}
+				rightSection={<KeyboardShortcut>{isMacOs() ? "⌘ + K" : "Ctrl + K"}</KeyboardShortcut>}
+				styles={{ rightSection: { pointerEvents: "none" } }}
+				mb="xs"
+				mx="xs"
+				onFocus={() => spotlight.openSpotlight()}
+			/>
+
+			<Divider mt="xs" mx="xs" />
+
+			<MantineNavbar.Section grow component={ScrollArea}>
+				<div className={classes.linksInner}>{data}</div>
+			</MantineNavbar.Section>
+			<Divider my="xs" mx="xs" />
+			<MantineNavbar.Section className={classes.footer}>
+				<UserButton />
+			</MantineNavbar.Section>
+		</MantineNavbar>
+	);
+};
 
 export default Navbar;

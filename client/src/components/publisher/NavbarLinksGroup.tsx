@@ -9,7 +9,7 @@ import {
   createStyles,
   rem,
 } from '@mantine/core';
-import { IconCalendarStats, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { ILinksGroupProps } from '@/components/types';
 
 const useStyles = createStyles((theme) => ({
@@ -24,7 +24,7 @@ const useStyles = createStyles((theme) => ({
     '&:hover': {
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
       color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-    },
+    }
   },
 
   link: {
@@ -51,7 +51,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 
-export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }: ILinksGroupProps) => {
+const LinksGroup = ({ icon: Icon, label, color, initiallyOpened, links }: ILinksGroupProps) => {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
@@ -73,7 +73,7 @@ export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }: ILinks
       <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
         <Group position="apart" spacing={0}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <ThemeIcon variant="light" size={30}>
+            <ThemeIcon variant="light" size={30} color={color}>
               <Icon size="1.1rem" />
             </ThemeIcon>
             <Box ml="md">{label}</Box>
@@ -95,28 +95,4 @@ export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }: ILinks
   );
 }
 
-const mockdata = {
-  label: 'Releases',
-  icon: IconCalendarStats,
-  links: [
-    { label: 'Upcoming releases', link: '/' },
-    { label: 'Previous releases', link: '/' },
-    { label: 'Releases schedule', link: '/' },
-  ],
-};
-
-const NavbarLinksGroup = () => {
-  return (
-    <Box
-      sx={(theme) => ({
-        minHeight: rem(220),
-        padding: theme.spacing.md,
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-      })}
-    >
-      <LinksGroup {...mockdata} />
-    </Box>
-  );
-}
-
-export default NavbarLinksGroup;
+export default LinksGroup;

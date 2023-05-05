@@ -38,7 +38,14 @@ const AppShell = ({ children }: any) => {
 								)}
 							</ActionIcon>
 
-							<ActionIcon variant="default" size="2rem" radius="md" onClick={() => ui.setColorScheme(colorScheme === "dark" ? "light" : "dark")}>
+							<ActionIcon
+								variant="default"
+								size="2rem"
+								radius="md"
+								onClick={() => {
+									ui.setColorScheme(colorScheme === "dark" ? "light" : "dark");
+								}}
+							>
 								{dark ? (
 									<Tooltip label="Disable dark mode">
 										<IconSun size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
