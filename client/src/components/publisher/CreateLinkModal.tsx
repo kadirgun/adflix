@@ -1,7 +1,9 @@
 import { isURL } from "@/helpers/validator";
+import { useApi } from "@/hooks";
 import { Button, Checkbox, Divider, Grid, PasswordInput, Stack, Text, TextInput, rem } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { ContextModalProps } from "@mantine/modals";
+import { notifications } from "@mantine/notifications";
 import { IconLink, IconLock, IconLockOpen } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 
@@ -12,6 +14,8 @@ const labelStyle = {
 const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [isProtected, setIsProtected] = useState<boolean>(false);
+
+  const api = useApi();
 
 	const form = useForm({
 		initialValues: {
@@ -54,8 +58,38 @@ const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
 	);
 
 	const handleSubmit = useCallback(() => {
-		console.log(form.values);
 		setLoading(true);
+    api.links
+			.create(form.values)
+			.then((response) => {
+				console.log(response.data)
+        notifications.show({
+          title: 'Link Created',
+          message: "Bu mesajdan sonra linke özel rapor sayfasına yönlendireceğim.",
+          color: "green",
+        })
+        handleCloseModal();
+			})
+			.catch((error) => {
+				if (error?.response?.data?.errors) {
+					form.setErrors(error.response.data.errors);
+				} else if (error?.response?.data?.error) {
+          notifications.show({
+            title: 'Error!',
+            message: error.response.data.error,
+            color: "red",
+          })
+				} else {
+          notifications.show({
+            title: 'Error!',
+            message: "Something went wrong, please try again later.",
+            color: "red",
+          })
+				}
+			})
+			.finally(() => {
+				setLoading(false);
+			});
 	}, [form.values]);
 
 	return (

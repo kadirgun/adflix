@@ -1,4 +1,4 @@
-import { ILogin, IRegister } from "./api.types";
+import { ILogin, IRegister, ICreateLink } from "./api.types";
 import useAxios from "./useAxios";
 
 export default () => {
@@ -16,6 +16,11 @@ export default () => {
     account: {
       info: async () => {
         return await axios.get("/account")
+      }
+    },
+    links: {
+      create: async (params: ICreateLink) => {
+        return await axios.post("/links", params)
       }
     }
   }

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/slices/store";
 import { UserActions } from "@/slices/user";
+import { modals } from '@mantine/modals';
 
 const useAxios = () => {
 	const auth = useAppSelector((state) => state.user.auth);
@@ -23,6 +24,7 @@ const useAxios = () => {
 		(error) => {
 			const { response } = error;
 			if (response?.status === 401) {
+				modals.closeAll();
 				dispatch(UserActions.destroyAuth());
 			}
 

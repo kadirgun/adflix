@@ -10,3 +10,9 @@ export interface IRegister {
   password: string;
   password_confirmation: string;
 }
+
+export interface ICreateLink {
+  target: string;
+  password: string;
+  excludes: number[];
+}
