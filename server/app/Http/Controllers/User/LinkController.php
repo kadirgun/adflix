@@ -36,7 +36,7 @@ class LinkController extends Controller {
             'excludes' => $request->excludes,
         ]);
 
-        return response()->json(new LinkResource($link));
+        return response()->json(new LinkResource($link->fresh()));
     }
 
     public function get($id){
