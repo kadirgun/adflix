@@ -94,11 +94,17 @@ class AuthController extends Controller {
             ], 400);
         }
 
-        $user = User::findOrFail($request->id);
+        $user = User::find($request->id);
+
+        if(!$user) {
+            return response()->json([
+                'error' => 'Invalid or expired url provided',
+            ], 404);
+        }
 
         if ($user->hasVerifiedEmail()){
             return response()->json([
-                'error' => 'Email already verified',
+                'error' => 'Your email address already has been verified',
             ], 400);
         }
 

@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 import { useForm, isEmail, isNotEmpty } from "@mantine/form";
 import { TextInput, PasswordInput, Text, Paper, Group, PaperProps, Button, Anchor, Stack, Title, Box } from "@mantine/core";
 import { ReactElement, useCallback, useEffect, useState } from "react";

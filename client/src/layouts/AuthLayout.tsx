@@ -7,7 +7,7 @@ import Link from "next/link";
 const AuthLayout = ({ children }: any) => {
 	const auth = useAuth();
 	const router = useRouter();
-	if (auth.isLoggedin) {
+	if (auth.isLoggedin && !children.type.without?.includes("auth")) {
 		router.replace(router.query?.redirect?.toString() || "/publisher");
 		return null;
 	}
