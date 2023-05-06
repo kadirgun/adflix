@@ -29,16 +29,21 @@ class LinkController extends Controller {
 
         $page = $request->get('page', 1);
         $limit = $request->get('limit', 10);
-        $search = $request->get('search', '');
+        $search = $request->get('search', false);
 
-        $query = $request->user()->links()
-            ->orderBy('id', 'desc')
-            ->limit($limit)
-            ->offset(($page - 1) * $limit)
-            ->where(function ($query) use ($search) {
+        $query = $request->user()->links();
+        $count = $query->count();
+
+        if ($search) {
+            $query->where(function ($query) use ($search) {
                 $query->where('target', 'like', "%$search%")
                     ->orWhere('key', 'like', "%$search%");
             });
+        }
+
+        $query->orderBy('id', 'desc')
+            ->limit($limit)
+            ->offset(($page - 1) * $limit);
 
         if ($request->has('filters')) {
             $filters = (object) $request->get('filters');
@@ -49,7 +54,11 @@ class LinkController extends Controller {
         }
 
         $links = $query->get();
-        return response()->json(LinkResource::collection($links));
+
+        return response()->json([
+            'links' => LinkResource::collection($links),
+            'count' => $count,
+        ]);
     }
 
     public function create(Request $request) {

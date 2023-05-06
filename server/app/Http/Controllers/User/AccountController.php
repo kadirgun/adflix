@@ -30,7 +30,7 @@ class AccountController extends Controller {
 
         $user = auth()->user();
 
-        if($request->has('settings')){
+        if ($request->has('settings')) {
             $settings = UserSettingsHelper::parse($request->settings);
             $validator->setValue('settings', $settings);
         }
