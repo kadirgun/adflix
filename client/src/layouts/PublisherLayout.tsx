@@ -5,12 +5,14 @@ import AppShell from "@/components/publisher/AppShell";
 import { IconSearch } from "@tabler/icons-react";
 import { SpotlightProvider } from "@mantine/spotlight";
 import { spootlightActions } from "@/core/navbar";
-
+import useConfig from "@/hooks/useConfig";
+import { batch } from "react-redux";
 
 const PublisherLayout = ({ children }: any) => {
-	const ui = useUi();
 	const api = useApi();
 	const auth = useAuth();
+	const ui = useUi();
+	const config = useConfig();
 	const router = useRouter();
 
 	const isFirstInit = useRef(true);
@@ -33,15 +35,16 @@ const PublisherLayout = ({ children }: any) => {
 
 	useEffect(() => {
 		if (auth.isLoggedin) {
-			api.account
-				.info()
-				.then((response) => {
-					auth.setUser(response.data);
-					ui.setAuthLoading(false);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			(async () => {
+				const account = await api.account.info().catch((error) => null);
+				if (!account?.data?.email) return;
+				const appConfig = await api.config().catch((error) => null);
+				if (!appConfig?.data?.domains) return;
+				auth.setUser(account.data);
+				config.setDomains(appConfig.data.domains);
+				config.setAdTypes(appConfig.data.ads_types);
+				ui.setAuthLoading(false);
+			})();
 		} else {
 			router.replace({
 				pathname: "/publisher/auth/login",
@@ -55,7 +58,7 @@ const PublisherLayout = ({ children }: any) => {
 	}
 
 	return (
-		<SpotlightProvider actions={spootlightActions} searchIcon={<IconSearch size="1.2rem" />} searchPlaceholder="Search..." shortcut="mod + K" nothingFoundMessage="Nothing found...">
+		<SpotlightProvider actions={spootlightActions} searchIcon={<IconSearch size="1.2rem" />} searchPlaceholder="Search..." shortcut="/" nothingFoundMessage="Nothing found...">
 			<AppShell>{children}</AppShell>
 		</SpotlightProvider>
 	);

@@ -6,10 +6,12 @@ import { getPersistConfig } from "redux-deep-persist";
 
 import user from "./user";
 import ui from "./ui";
+import config from "./config";
 
 const rootReducer = combineReducers({
 	user,
 	ui,
+	config,
 });
 
 const persistConfig = getPersistConfig({
@@ -17,7 +19,7 @@ const persistConfig = getPersistConfig({
 	key: "root",
 	storage,
 	version: 1,
-	whitelist: ["user.auth", "ui.colorScheme"],
+	whitelist: ["user.auth", "ui.colorScheme", "config"],
 	rootReducer,
 });
 

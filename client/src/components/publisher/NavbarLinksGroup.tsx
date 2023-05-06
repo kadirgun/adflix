@@ -11,6 +11,7 @@ import {
 } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { ILinksGroupProps } from '@/components/types';
+import Link from 'next/link';
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -51,7 +52,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 
-const LinksGroup = ({ icon: Icon, label, color, initiallyOpened, links }: ILinksGroupProps) => {
+const LinksGroup = ({ icon: Icon, label, color, route, initiallyOpened, links }: ILinksGroupProps) => {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
@@ -60,7 +61,7 @@ const LinksGroup = ({ icon: Icon, label, color, initiallyOpened, links }: ILinks
     <Text<'a'>
       component="a"
       className={classes.link}
-      href={link.link}
+      href={link.route}
       key={link.label}
       onClick={(event) => event.preventDefault()}
     >
@@ -70,7 +71,7 @@ const LinksGroup = ({ icon: Icon, label, color, initiallyOpened, links }: ILinks
 
   return (
     <>
-      <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
+      <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control} component={Link} href={route}>
         <Group position="apart" spacing={0}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <ThemeIcon variant="light" size={30} color={color}>

@@ -2,13 +2,13 @@ import { IconReportSearch, IconHome, IconFileText, IconChartPie, IconAffiliate, 
 import { SpotlightAction } from "@mantine/spotlight";
 
 export const links = [
-	{ label: "Dashboard", icon: IconDashboard, color: "blue" },
-	{ label: "Monetized Links", icon: IconLink, color: "green"},
-	{ label: "Reports", icon: IconReportSearch, color: "green" },
-	{ label: "Charts", icon: IconChartPie, color: "green" },
-	{ label: "Referrals", icon: IconAffiliate, color: "cyan" },
-	{ label: "Payments", icon: IconWallet, color: "cyan" },
-	{ label: "Settings", icon: IconAdjustments, color: "pink" },
+	{ label: "Dashboard", icon: IconDashboard, color: "blue", route: "/publisher" },
+	{ label: "Monetized Links", icon: IconLink, color: "green", route: "/publisher/links"},
+	{ label: "Reports", icon: IconReportSearch, color: "green", route: "/publisher" },
+	{ label: "Charts", icon: IconChartPie, color: "green", route: "/publisher" },
+	{ label: "Referrals", icon: IconAffiliate, color: "cyan", route: "/publisher" },
+	{ label: "Payments", icon: IconWallet, color: "cyan", route: "/publisher" },
+	{ label: "Settings", icon: IconAdjustments, color: "pink", route: "/publisher" },
 ];
 
 

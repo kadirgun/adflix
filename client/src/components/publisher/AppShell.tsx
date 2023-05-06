@@ -25,26 +25,22 @@ const AppShell = ({ children }: any) => {
 						<Group position={"right"}>
 							<ActionIcon variant="default" size="2rem" radius="md" onClick={toggleSideBar}>
 								{sidebar ? (
-									<Tooltip label="Hide menu">
-										<IconLayoutSidebarLeftCollapse size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-									</Tooltip>
+									<IconLayoutSidebarLeftCollapse size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
 								) : (
-									<Tooltip label="Show menu">
-										<IconLayoutSidebarLeftExpand size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-									</Tooltip>
+									<IconLayoutSidebarLeftExpand size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
 								)}
 							</ActionIcon>
 
-							<ActionIcon variant="default" size="2rem" radius="md" onClick={ui.toggleColorScheme}>
-								{ui.colorScheme === "dark" ? (
-									<Tooltip label="Disable dark mode">
-										<IconSun size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-									</Tooltip>
-								) : (
-									<Tooltip label="Enable dark mode">
-										<IconMoon size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-									</Tooltip>
-								)}
+							<ActionIcon
+								variant="default"
+								size="2rem"
+								radius="md"
+								onClick={ui.toggleColorScheme}
+								sx={(theme) => ({
+									color: theme.colorScheme === "dark" ? theme.colors.yellow[4] : theme.colors.blue[6],
+								})}
+							>
+								{ui.colorScheme === "dark" ? <IconSun size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /> : <IconMoon size="1.20rem" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />}
 							</ActionIcon>
 						</Group>
 					</Group>

@@ -1,15 +1,11 @@
 import { useRef } from "react";
-import { Navbar as MantineNavbar, ScrollArea, createStyles, rem, TextInput, Divider, Button } from "@mantine/core";
-import { modals } from "@mantine/modals";
-
+import { Navbar as MantineNavbar, ScrollArea, createStyles, rem, TextInput, Divider, Button, Flex, Kbd } from "@mantine/core";
 import LinksGroup from "@/components/publisher/NavbarLinksGroup";
 import UserButton from "@/components/publisher/UserButton";
-import KeyboardShortcut from "@/components/KeyboardShortcut";
-
 import { links } from "@/core/navbar";
 import { IconRocket, IconSearch } from "@tabler/icons-react";
 import { useSpotlight } from "@mantine/spotlight";
-import { isMacOs } from "@/helpers/utils";
+import { handleCreateLink } from "@/core/modal";
 
 const useStyles = createStyles((theme) => ({
 	navbar: {
@@ -28,7 +24,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const Navbar = () => {
-	const { classes, theme } = useStyles();
+	const { classes } = useStyles();
 	const routerSearchRef = useRef<any>();
 	const data = links.map((item) => <LinksGroup {...item} key={item.label} />);
 	const spotlight = useSpotlight();
@@ -37,37 +33,22 @@ const Navbar = () => {
 		routerSearchRef.current?.blur();
 	}
 
-	const handleCreateLink = () => {
-		modals.openContextModal({
-			modal: "createLink",
-			title: "Create Monetized Short Link",
-			styles: {
-				title: {
-					fontWeight: 600,
-					color: theme.colors.blue[6],
-				}
-			},
-			innerProps: {},
-			size: "md",
-			centered: true,
-			withCloseButton: false,
-			closeOnClickOutside: false,
-			closeOnEscape: false,
-		});
-	};
-
 	return (
 		<MantineNavbar width={{ sm: 300 }} px="xs" pb="xs" className={classes.navbar}>
 			<Button size="xs" leftIcon={<IconRocket size={rem(15)} />} variant="gradient" my="md" mx="xs" onClick={handleCreateLink}>
 				Create Link
 			</Button>
+
 			<TextInput
 				ref={routerSearchRef}
 				placeholder="Search page..."
-				size="xs"
-				icon={<IconSearch size={12} />}
-				rightSectionWidth={70}
-				rightSection={<KeyboardShortcut>{isMacOs() ? "⌘ + K" : "Ctrl + K"}</KeyboardShortcut>}
+				icon={<IconSearch size="1rem" />}
+				rightSectionWidth={34}
+				rightSection={
+					<Flex align="center">
+						<Kbd>/</Kbd>
+					</Flex>
+				}
 				styles={{ rightSection: { pointerEvents: "none" } }}
 				mb="xs"
 				mx="xs"

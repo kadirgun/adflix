@@ -1,5 +1,3 @@
-import { UnstyledButtonProps } from "@mantine/core";
-
 export interface IErrorMessageResponse {
   [key: string]: Array<string> | string
 }
@@ -13,5 +11,26 @@ export interface ILinksGroupProps {
   label: string;
   color: string;
   initiallyOpened?: boolean;
-  links?: { label: string; link: string }[];
+  route: string;
+  links?: { label: string; route: string }[];
+}
+
+export type Link = {
+  id: number;
+  key: string;
+  name: string;
+  favicon: string;
+  domain: number;
+  type: number;
+  target: string;
+  password: string;
+  earnings: number;
+  clicks: number;
+  excludes: number[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ILinkCardProps {
+  value: Link;
 }

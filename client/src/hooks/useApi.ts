@@ -16,12 +16,18 @@ export default () => {
         return await axios.post("/auth/verify", params)
       },
     },
+    config: async () => {
+      return await axios.get("/config")
+    },
     account: {
       info: async () => {
         return await axios.get("/account")
       }
     },
     links: {
+      list: async () => {
+        return await axios.post("/links/list")
+      },
       create: async (params: ICreateLink) => {
         return await axios.post("/links", params)
       }
