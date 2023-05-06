@@ -22,6 +22,14 @@ class LinkDomain {
   }
 
   public static function getDomains(){
-    return array_flip(self::list());
+    $domains = [];
+    foreach (self::list() as $domain => $id) {
+      $domains[] = [
+        'id' => $id,
+        'domain' => $domain
+      ];
+    }
+
+    return $domains;
   }
 }

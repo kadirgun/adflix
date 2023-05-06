@@ -10,10 +10,13 @@ enum AdsType: int {
   public static function labels(){
     $labels = [];
     foreach (self::cases() as $case) {
-      $labels[$case->value] = self::label($case);
+      $labels[] = [
+        'id' => $case->value,
+        'label' => self::label($case)
+      ];
     }
 
-    return (object) $labels;
+    return $labels;
   }
 
   public static function label($value){
