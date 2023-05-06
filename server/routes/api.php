@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('links')->group(function () {
-        Route::get('/', [LinkController::class, 'list']);
+        Route::post('/list', [LinkController::class, 'list']);
         Route::post('/', [LinkController::class, 'create'])->middleware('verified');
     
         Route::prefix('{id}')->group(function () {

@@ -14,7 +14,41 @@ use Illuminate\Support\Str;
 
 class LinkController extends Controller {
     public function list(Request $request) {
-        $links = $request->user()->links()->orderBy('id', 'desc')->get();
+        $validator = Validator::make($request->all(), [
+            'page' => 'nullable|integer',
+            'limit' => 'nullable|integer|max:100',
+            'search' => 'nullable|string|max:100',
+            'filters' => 'nullable|array',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $page = $request->get('page', 1);
+        $limit = $request->get('limit', 10);
+        $search = $request->get('search', '');
+
+        $query = $request->user()->links()
+            ->orderBy('id', 'desc')
+            ->limit($limit)
+            ->offset(($page - 1) * $limit)
+            ->where(function ($query) use ($search) {
+                $query->where('target', 'like', "%$search%")
+                    ->orWhere('key', 'like', "%$search%");
+            });
+
+        if ($request->has('filters')) {
+            $filters = (object) $request->get('filters');
+
+            if (isset($filters->domain)) {
+                $query->where('domain', $filters->domain);
+            }
+        }
+
+        $links = $query->get();
         return response()->json(LinkResource::collection($links));
     }
 
