@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('key')->unique()->index();
+            $table->integer('domain');
             $table->tinyInteger('type')->default(1);
             $table->string('target');
             $table->string('password')->nullable();

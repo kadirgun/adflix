@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\User\ClickResource;
 use App\Http\Resources\User\LinkResource;
 use App\Rules\ExcludesRule;
+use App\Rules\LinkDomainRule;
 use App\Rules\LinkTargetRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +14,8 @@ use Illuminate\Support\Str;
 
 class LinkController extends Controller {
     public function list(Request $request) {
-        return response()->json(LinkResource::collection($request->user()->links));
+        $links = $request->user()->links()->orderBy('id', 'desc')->get();
+        return response()->json(LinkResource::collection($links));
     }
 
     public function create(Request $request) {
@@ -23,6 +24,7 @@ class LinkController extends Controller {
             'password' => 'nullable|string|min:4|max:25',
             'type' => 'nullable|integer|between:1,3',
             'excludes' => ['nullable', new ExcludesRule],
+            'domain' => ['required', 'integer', new LinkDomainRule]
         ]);
 
         if ($validator->fails()) {
@@ -32,16 +34,14 @@ class LinkController extends Controller {
         }
 
         $link = $request->user()->links()->create([
-            'target' => $request->target,
-            'password' => $request->password,
+            ...$validator->validated(),
             'key' => Str::random(6),
-            'excludes' => $request->excludes,
         ]);
 
         return response()->json(new LinkResource($link->fresh()));
     }
 
-    public function get($id){
+    public function get($id) {
         $link = auth()->user()->links()->where('id', $id)->first();
 
         if (!$link) {
@@ -53,7 +53,7 @@ class LinkController extends Controller {
         return response()->json(new LinkResource($link));
     }
 
-    public function delete($id){
+    public function delete($id) {
         $link = auth()->user()->links()->where('id', $id)->first();
 
         if (!$link) {
@@ -69,7 +69,7 @@ class LinkController extends Controller {
         ]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id) {
         $validator = Validator::make($request->all(), [
             'target' => 'required|url',
             'password' => 'nullable|string|min:8|max:25',
@@ -84,24 +84,8 @@ class LinkController extends Controller {
             ], 404);
         }
 
-        $link->update([
-            'target' => $request->target,
-            'password' => $request->password,
-            'excludes' => $request->excludes,
-        ]);
+        $link->update($validator->validated());
 
         return response()->json($link);
-    }
-
-    public function clicks($id){
-        $link = auth()->user()->links()->where('id', $id)->first();
-
-        if (!$link) {
-            return response()->json([
-                'message' => 'Link not found',
-            ], 404);
-        }
-
-        return response()->json(ClickResource::collection($link->clicks));
     }
 }

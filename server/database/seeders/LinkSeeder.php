@@ -18,6 +18,7 @@ class LinkSeeder extends Seeder {
         ], [
             'user_id' => 1,
             'target' => 'https://google.com',
+            'domain' => 1,
             'key' => Str::random(6)
         ]);
 
@@ -26,6 +27,7 @@ class LinkSeeder extends Seeder {
         ], [
             'user_id' => 1,
             'target' => 'https://google.com',
+            'domain' => 1,
             'key' => Str::random(6),
             'excludes' => [AdsType::Erotic, AdsType::Gambling]
         ]);
