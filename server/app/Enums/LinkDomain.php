@@ -6,6 +6,8 @@ class LinkDomain {
   public static function list(){
     return [
       'bwk.pw' => 1,
+      'bwk.fr' => 2,
+      'bwk.io' => 3,
     ];
   }
 
@@ -17,5 +19,9 @@ class LinkDomain {
   public static function getDomain($id){
     $list = self::list();
     return array_search($id, $list);
+  }
+
+  public static function getDomains(){
+    return array_flip(self::list());
   }
 }

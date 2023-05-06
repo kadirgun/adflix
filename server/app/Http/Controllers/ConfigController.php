@@ -10,7 +10,7 @@ class ConfigController extends Controller
 {
     public function get(){
         return response()->json([
-            'domains' => LinkDomain::list(),
+            'domains' => LinkDomain::getDomains(),
             'ads_types' => AdsType::labels(),
         ]);
     }
