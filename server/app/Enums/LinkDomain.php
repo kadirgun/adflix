@@ -26,7 +26,7 @@ class LinkDomain {
     foreach (self::list() as $domain => $id) {
       $domains[] = [
         'id' => $id,
-        'domain' => $domain
+        'name' => $domain
       ];
     }
 
