@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ClickController;
@@ -25,6 +26,8 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('config', [ConfigController::class, 'get']);
+    
     Route::prefix('auth')->group(function () {
         Route::get('logout', [AuthController::class, 'logout']);
     });
