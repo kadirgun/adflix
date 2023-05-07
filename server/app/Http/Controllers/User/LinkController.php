@@ -64,7 +64,7 @@ class LinkController extends Controller {
     public function create(Request $request) {
         $validator = Validator::make($request->all(), [
             'target' => ['required', 'url', new LinkTargetRule],
-            'password' => 'nullable|string|min:4|max:25',
+            'password' => 'nullable|string|min:1',
             'type' => 'nullable|integer|between:1,3',
             'excludes' => ['nullable', new ExcludesRule],
             'domain' => ['required', 'integer', new LinkDomainRule]

@@ -21,7 +21,7 @@ const useStyles = createStyles((theme) => {
 			":hover": {
 				textDecoration: "none",
 			},
-		},
+		}
 	};
 });
 
@@ -80,7 +80,7 @@ const Index = () => {
 			) : (
 				<Grid>
 					{data.map((link) => (
-						<Grid.Col lg={6} xl={4} key={link.key}>
+						<Grid.Col md={6} lg={4} xl={3} key={link.key}>
               <LinkCard value={link} />
             </Grid.Col>
 					))}
