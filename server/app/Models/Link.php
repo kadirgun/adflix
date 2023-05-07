@@ -27,4 +27,9 @@ class Link extends Model
     public function clicks(){
         return $this->hasMany(Click::class);
     }
+
+    public function getCPMAttribute(){
+        if($this->clicks == 0) return 0;
+        return ($this->earnings / $this->clicks) * 1000;
+    }
 }
