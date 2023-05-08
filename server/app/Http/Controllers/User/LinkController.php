@@ -72,6 +72,7 @@ class LinkController extends Controller {
         return response()->json([
             'links' => LinkResource::collection($links),
             'count' => $count,
+            'next' => $count > ($page * $limit),
         ]);
     }
 
