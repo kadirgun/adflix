@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Helpers\ScrapeHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\LinkResource;
 use App\Rules\ExcludesRule;
@@ -76,8 +77,11 @@ class LinkController extends Controller {
             ], 400);
         }
 
+        $scrape = ScrapeHelper::fetch($request->target);
+
         $link = $request->user()->links()->create([
             ...$validator->validated(),
+            'name' => $scrape->title,
             'key' => Str::random(6),
         ]);
 

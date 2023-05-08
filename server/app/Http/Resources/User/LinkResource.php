@@ -18,7 +18,6 @@ class LinkResource extends JsonResource
             'id' => $this->id,
             'key' => $this->key,
             'name' => $this->name,
-            'favicon' => $this->favicon,
             'domain' => $this->domain,
             'type' => $this->type,
             'target' => $this->target,

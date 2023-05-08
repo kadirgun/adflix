@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('key')->unique()->index();
             $table->string('name')->nullable();
-            $table->string('favicon')->nullable();
             $table->integer('domain');
             $table->tinyInteger('type')->default(1);
             $table->string('target');
