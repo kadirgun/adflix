@@ -10,6 +10,7 @@ import Moment from "moment";
 import useConfig from "@/hooks/useConfig";
 import { Link } from "@/components/types";
 import LinkCard from "@/components/publisher/LinkCard";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => {
 	return {
@@ -29,7 +30,7 @@ const Index = () => {
 	const { classes } = useStyles();
 
 	const api = useApi();
-	const config = useConfig();
+	const router = useRouter();
 
 	const [data, setData] = useState<Link[]>([]);
 	const [selectedRecords, setSelectedRecords] = useState<any[]>([]);
@@ -37,6 +38,7 @@ const Index = () => {
 	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
+		console.log("rendered")
 		api.links
 			.list()
 			.then((response) => {
@@ -50,7 +52,7 @@ const Index = () => {
 					color: "red",
 				});
 			});
-	}, []);
+	}, [router]);
 
 	return (
 		<Stack>
@@ -80,7 +82,7 @@ const Index = () => {
 			) : (
 				<Grid>
 					{data.map((link) => (
-						<Grid.Col md={6} lg={4} xl={3} key={link.key}>
+						<Grid.Col xs={12} lg={6} xl={4} key={link.key}>
               <LinkCard value={link} />
             </Grid.Col>
 					))}

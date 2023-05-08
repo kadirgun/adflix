@@ -19,7 +19,6 @@ export type Link = {
   id: number;
   key: string;
   name: string;
-  favicon: string;
   domain: number;
   type: number;
   target: string;

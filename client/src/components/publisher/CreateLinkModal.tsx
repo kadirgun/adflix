@@ -1,10 +1,13 @@
 import { isURL } from "@/helpers/validator";
 import { useApi } from "@/hooks";
-import { Button, Checkbox, Divider, Grid, PasswordInput, Stack, Text, TextInput, rem } from "@mantine/core";
+import useConfig from "@/hooks/useConfig";
+import { Button, Checkbox, Divider, Grid, PasswordInput, Select, Stack, Text, TextInput, rem } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useForceUpdate } from "@mantine/hooks";
 import { ContextModalProps } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
-import { IconLink, IconLock, IconLockOpen } from "@tabler/icons-react";
+import { IconLink, IconLock, IconWorldWww } from "@tabler/icons-react";
+import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 
 const labelStyle = {
@@ -15,13 +18,21 @@ const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [isProtected, setIsProtected] = useState<boolean>(false);
 
-  const api = useApi();
+	const api = useApi();
+	const config = useConfig();
+	const router = useRouter();
+
+	const domains = config.domains.map((item) => ({
+		value: item.id,
+		label: item.name,
+	}));
 
 	const form = useForm({
 		initialValues: {
 			target: "",
 			excludes: [] as any[],
 			password: "",
+			domain: config.domains.find(() => true)?.id,
 		},
 
 		validate: {
@@ -59,32 +70,38 @@ const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
 
 	const handleSubmit = useCallback(() => {
 		setLoading(true);
-    api.links
+		api.links
 			.create(form.values)
 			.then((response) => {
-				console.log(response.data)
-        notifications.show({
-          title: 'Link Created',
-          message: "Bu mesajdan sonra linke özel rapor sayfasına yönlendireceğim.",
-          color: "green",
-        })
-        handleCloseModal();
+				console.log(response.data);
+				notifications.show({
+					title: "Link Created",
+					message: "Your monetized link has been created successfully.",
+					color: "green",
+				});
+				handleCloseModal();
+
+				if (router.pathname === "/publisher/links") {
+					router.replace("/publisher/links");
+				} else {
+					router.push("/publisher/links");
+				}
 			})
 			.catch((error) => {
 				if (error?.response?.data?.errors) {
 					form.setErrors(error.response.data.errors);
 				} else if (error?.response?.data?.error) {
-          notifications.show({
-            title: 'Error!',
-            message: error.response.data.error,
-            color: "red",
-          })
+					notifications.show({
+						title: "Error!",
+						message: error.response.data.error,
+						color: "red",
+					});
 				} else {
-          notifications.show({
-            title: 'Error!',
-            message: "Something went wrong, please try again later.",
-            color: "red",
-          })
+					notifications.show({
+						title: "Error!",
+						message: "Something went wrong, please try again later.",
+						color: "red",
+					});
 				}
 			})
 			.finally(() => {
@@ -109,6 +126,23 @@ const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
 					}}
 					disabled={loading}
 					icon={<IconLink size="1rem" />}
+				/>
+
+				<Select
+					required
+					label="Short Domain"
+					labelProps={{
+						mb: "xs",
+					}}
+					placeholder="Select short domain"
+					searchable
+					nothingFound="No domains"
+					data={domains}
+					value={form.values.domain}
+					onChange={(item) => form.setFieldValue("domain", item)}
+					error={form.errors.domain}
+					disabled={loading}
+					icon={<IconWorldWww size="1rem" />}
 				/>
 
 				<Checkbox color="red" label="This URL is password-protected." mb={isProtected ? 0 : "xs"} styles={labelStyle} checked={isProtected} onChange={handleProtectChange} disabled={loading} />
