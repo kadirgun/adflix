@@ -78,7 +78,7 @@ class LinkController extends Controller {
 
     public function create(Request $request) {
         $validator = Validator::make($request->all(), [
-            'target' => ['required', 'url', new LinkTargetRule],
+            'target' => ['required', new LinkTargetRule],
             'password' => 'nullable|string|min:1',
             'type' => 'nullable|integer|between:1,3',
             'excludes' => ['nullable', new ExcludesRule],
@@ -132,9 +132,11 @@ class LinkController extends Controller {
 
     public function update(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'target' => 'required|url',
-            'password' => 'nullable|string|min:8|max:25',
+            'target' => ['required', new LinkTargetRule],
+            'password' => 'nullable|string|min:1',
+            'type' => 'nullable|integer|between:1,3',
             'excludes' => ['nullable', new ExcludesRule],
+            'domain' => ['required', 'integer', new LinkDomainRule]
         ]);
 
         $link = $request->user()->links()->where('id', $id)->first();
