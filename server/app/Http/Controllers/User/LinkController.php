@@ -32,13 +32,18 @@ class LinkController extends Controller {
         $limit = $request->get('limit', 10);
         $search = $request->get('search', false);
 
+        /**
+         * @var \Illuminate\Database\Query\Builder $query
+         */
+
         $query = $request->user()->links();
         $count = $query->count();
 
         if ($search) {
             $query->where(function ($query) use ($search) {
                 $query->where('target', 'like', "%$search%")
-                    ->orWhere('key', 'like', "%$search%");
+                    ->orWhere('key', 'like', "%$search%")
+                    ->orWhere('name', 'like', "%$search%");
             });
         }
 
@@ -51,6 +56,14 @@ class LinkController extends Controller {
 
             if (isset($filters->domain)) {
                 $query->where('domain', $filters->domain);
+            }
+
+            if (isset($filters->type)) {
+                $query->where('type', $filters->type);
+            }
+
+            if (isset($filters->excludes)) {
+                $query->whereJsonContains('excludes', $filters->excludes);
             }
         }
 
