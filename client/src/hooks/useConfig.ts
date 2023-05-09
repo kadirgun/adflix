@@ -14,17 +14,17 @@ const useConfig = () => {
 		[config.domains]
 	);
 
-	const setAdTypes = useCallback(
+	const setAdCategories = useCallback(
 		(adTypes: any) => {
-			dispatch(ConfigActions.setAdTypes(adTypes));
+			dispatch(ConfigActions.setAdCategories(adTypes));
 		},
-		[config.ads_types]
+		[config.ad_categories]
 	);
 
 	return {
 		...config,
 		setDomains,
-		setAdTypes,
+		setAdCategories,
 	};
 };
 

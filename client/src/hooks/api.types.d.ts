@@ -21,5 +21,5 @@ export interface IVerify {
 export interface ICreateLink {
   target: string;
   password: string;
-  excludes: number[];
+  excluded_categories: number[];
 }

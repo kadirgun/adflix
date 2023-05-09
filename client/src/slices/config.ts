@@ -4,14 +4,14 @@ export const ConfigSlice = createSlice({
 	name: "Config",
 	initialState: {
     domains: [] as any[],
-    ads_types: [] as any[],
+    ad_categories: [] as any[],
 	},
 	reducers: {
 		setDomains: (state, { payload }) => {
 			state.domains = payload;
 		},
-		setAdTypes: (state, { payload }) => {
-			state.ads_types = payload;
+		setAdCategories: (state, { payload }) => {
+			state.ad_categories = payload;
 		},
 	},
 });

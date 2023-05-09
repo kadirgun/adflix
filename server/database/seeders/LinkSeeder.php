@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\AdsType;
+use App\Enums\AdvertCategory;
 use App\Models\Link;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -29,7 +29,7 @@ class LinkSeeder extends Seeder {
             'target' => 'https://google.com',
             'domain' => 1,
             'key' => Str::random(6),
-            'excludes' => [AdsType::Erotic, AdsType::Gambling]
+            'excluded_categories' => [AdvertCategory::Erotic, AdvertCategory::Gambling]
         ]);
     }
 }

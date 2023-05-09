@@ -17,7 +17,7 @@ class Link extends Model
         'type' => 'int',
         'earnings' => 'float',
         'clicks' => 'int',
-        'excludes' => AsArrayObject::class.':'.AdvertCategory::class,
+        'excluded_categories' => AsArrayObject::class.':'.AdvertCategory::class,
     ];
 
     public function user(){

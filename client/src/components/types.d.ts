@@ -26,7 +26,7 @@ export type Link = {
   earnings: number;
   cpm: number;
   clicks: number;
-  excludes: number[];
+  excluded_categories: number[];
   created_at: string;
   updated_at: string;
 }

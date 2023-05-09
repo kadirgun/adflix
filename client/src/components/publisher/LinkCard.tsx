@@ -27,7 +27,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const LinkCard = ({ value }: ILinkCardProps) => {
-	const { clicks, domain, earnings, cpm, excludes, key, name, password, target } = value;
+	const { clicks, domain, earnings, cpm, excluded_categories, key, name, password, target } = value;
 	const { classes, theme } = useStyles();
 	const config = useConfig();
 	const shortUrl = `https://${config.domains.find((item) => item.id === domain)?.name}/${key}`;
@@ -178,9 +178,9 @@ const LinkCard = ({ value }: ILinkCardProps) => {
 					mb="md"
 				/>
 				<Group spacing={7} mt={5} position="center">
-					{config.ads_types.map((type) => (
-						<Chip disabled={excludes.includes(type.id)} color="green" variant="light" checked={!excludes.includes(type.id)} key={type.label}>
-							{type.label}
+					{config.ad_categories.map((category) => (
+						<Chip disabled={excluded_categories.includes(category.id)} color="green" variant="light" checked={!excluded_categories.includes(category.id)} key={category.label}>
+							{category.label}
 						</Chip>
 					))}
 				</Group>

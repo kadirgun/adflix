@@ -42,7 +42,7 @@ const PublisherLayout = ({ children }: any) => {
 				if (!appConfig?.data?.domains) return;
 				auth.setUser(account.data);
 				config.setDomains(appConfig.data.domains);
-				config.setAdTypes(appConfig.data.ads_types);
+				config.setAdCategories(appConfig.data.ad_categories);
 				ui.setAuthLoading(false);
 			})();
 		} else {

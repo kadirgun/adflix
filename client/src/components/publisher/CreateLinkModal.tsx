@@ -1,7 +1,18 @@
 import { isURL } from "@/helpers/validator";
 import { useApi } from "@/hooks";
 import useConfig from "@/hooks/useConfig";
-import { Button, Checkbox, Divider, Grid, PasswordInput, Select, Stack, Text, TextInput, rem } from "@mantine/core";
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Grid,
+  PasswordInput,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  rem,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useForceUpdate } from "@mantine/hooks";
 import { ContextModalProps } from "@mantine/modals";
@@ -11,193 +22,222 @@ import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 
 const labelStyle = {
-	label: { paddingLeft: rem(8) },
+  label: { paddingLeft: rem(8) },
 };
 
 const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
-	const [loading, setLoading] = useState<boolean>(false);
-	const [isProtected, setIsProtected] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isProtected, setIsProtected] = useState<boolean>(false);
 
-	const api = useApi();
-	const config = useConfig();
-	const router = useRouter();
+  const api = useApi();
+  const config = useConfig();
+  const router = useRouter();
 
-	const domains = config.domains.map((item) => ({
-		value: item.id,
-		label: item.name,
-	}));
+  const domains = config.domains.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }));
 
-	const form = useForm({
-		initialValues: {
-			target: "",
-			excludes: [] as any[],
-			password: "",
-			domain: config.domains.find(() => true)?.id,
-		},
+  const form = useForm({
+    initialValues: {
+      target: "",
+      excluded_categories: [] as any[],
+      password: "",
+      domain: config.domains.find(() => true)?.id,
+    },
 
-		validate: {
-			target: (value) => isURL(value, "The URL you entered is not valid."),
-			password: (value) => (isProtected && !value ? "Please enter the password." : null),
-		},
-	});
+    validate: {
+      target: (value) => isURL(value, "The URL you entered is not valid."),
+      password: (value) =>
+        isProtected && !value ? "Please enter the password." : null,
+    },
+  });
 
-	const handleCloseModal = () => {
-		context.closeContextModal(id);
-	};
+  const handleCloseModal = () => {
+    context.closeContextModal(id);
+  };
 
-	const handleProtectChange = useCallback(
-		(event: React.ChangeEvent<HTMLInputElement>) => {
-			setIsProtected(event.currentTarget.checked);
-			form.setFieldValue("password", "");
-		},
-		[isProtected]
-	);
+  const handleProtectChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setIsProtected(event.currentTarget.checked);
+      form.setFieldValue("password", "");
+    },
+    [isProtected]
+  );
 
-	const handleExcludesChange = useCallback(
-		(event: React.ChangeEvent<HTMLInputElement>) => {
-			const excluded = parseInt(event.currentTarget.value);
-			if (!form.values.excludes.includes(excluded)) {
-				form.setFieldValue("excludes", [...form.values.excludes, excluded]);
-			} else {
-				form.setFieldValue(
-					"excludes",
-					form.values.excludes.filter((item) => item !== excluded)
-				);
-			}
-		},
-		[form.values]
-	);
+  const handleExcludedCategoriesChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const excluded = parseInt(event.currentTarget.value);
+      if (!form.values.excluded_categories.includes(excluded)) {
+        form.setFieldValue("excluded_categories", [
+          ...form.values.excluded_categories,
+          excluded,
+        ]);
+      } else {
+        form.setFieldValue(
+          "excluded_categories",
+          form.values.excluded_categories.filter((item) => item !== excluded)
+        );
+      }
+    },
+    [form.values]
+  );
 
-	const handleSubmit = useCallback(() => {
-		setLoading(true);
-		api.links
-			.create(form.values)
-			.then((response) => {
-				console.log(response.data);
-				notifications.show({
-					title: "Link Created",
-					message: "Your monetized link has been created successfully.",
-					color: "green",
-				});
-				handleCloseModal();
+  const handleSubmit = useCallback(() => {
+    setLoading(true);
+    api.links
+      .create(form.values)
+      .then((response) => {
+        console.log(response.data);
+        notifications.show({
+          title: "Link Created",
+          message: "Your monetized link has been created successfully.",
+          color: "green",
+        });
+        handleCloseModal();
 
-				if (router.pathname === "/publisher/links") {
-					router.replace("/publisher/links");
-				} else {
-					router.push("/publisher/links");
-				}
-			})
-			.catch((error) => {
-				if (error?.response?.data?.errors) {
-					form.setErrors(error.response.data.errors);
-				} else if (error?.response?.data?.error) {
-					notifications.show({
-						title: "Error!",
-						message: error.response.data.error,
-						color: "red",
-					});
-				} else {
-					notifications.show({
-						title: "Error!",
-						message: "Something went wrong, please try again later.",
-						color: "red",
-					});
-				}
-			})
-			.finally(() => {
-				setLoading(false);
-			});
-	}, [form.values]);
+        if (router.pathname === "/publisher/links") {
+          router.replace("/publisher/links");
+        } else {
+          router.push("/publisher/links");
+        }
+      })
+      .catch((error) => {
+        if (error?.response?.data?.errors) {
+          form.setErrors(error.response.data.errors);
+        } else if (error?.response?.data?.error) {
+          notifications.show({
+            title: "Error!",
+            message: error.response.data.error,
+            color: "red",
+          });
+        } else {
+          notifications.show({
+            title: "Error!",
+            message: "Something went wrong, please try again later.",
+            color: "red",
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [form.values]);
 
-	return (
-		<form onSubmit={form.onSubmit(() => handleSubmit())}>
-			<Divider mb="xs" opacity={0.3} />
-			<Stack>
-				<TextInput
-					required
-					data-autofocus
-					label="Target URL"
-					placeholder="Enter the URL you want to monetize."
-					value={form.values.target}
-					onChange={(event) => form.setFieldValue("target", event.currentTarget.value)}
-					error={form.errors.target}
-					labelProps={{
-						mb: "xs",
-					}}
-					disabled={loading}
-					icon={<IconLink size="1rem" />}
-				/>
+  return (
+    <form onSubmit={form.onSubmit(() => handleSubmit())}>
+      <Divider mb="xs" opacity={0.3} />
+      <Stack>
+        <TextInput
+          required
+          data-autofocus
+          label="Target URL"
+          placeholder="Enter the URL you want to monetize."
+          value={form.values.target}
+          onChange={(event) =>
+            form.setFieldValue("target", event.currentTarget.value)
+          }
+          error={form.errors.target}
+          labelProps={{
+            mb: "xs",
+          }}
+          disabled={loading}
+          icon={<IconLink size="1rem" />}
+        />
 
-				<Select
-					required
-					label="Short Domain"
-					labelProps={{
-						mb: "xs",
-					}}
-					placeholder="Select short domain"
-					searchable
-					nothingFound="No domains"
-					data={domains}
-					value={form.values.domain}
-					onChange={(item) => form.setFieldValue("domain", item)}
-					error={form.errors.domain}
-					disabled={loading}
-					icon={<IconWorldWww size="1rem" />}
-				/>
+        <Select
+          required
+          label="Short Domain"
+          labelProps={{
+            mb: "xs",
+          }}
+          placeholder="Select short domain"
+          searchable
+          nothingFound="No domains"
+          data={domains}
+          value={form.values.domain}
+          onChange={(item) => form.setFieldValue("domain", item)}
+          error={form.errors.domain}
+          disabled={loading}
+          icon={<IconWorldWww size="1rem" />}
+        />
 
-				<Checkbox color="red" label="This URL is password-protected." mb={isProtected ? 0 : "xs"} styles={labelStyle} checked={isProtected} onChange={handleProtectChange} disabled={loading} />
+        <Checkbox
+          color="red"
+          label="This URL is password-protected."
+          mb={isProtected ? 0 : "xs"}
+          styles={labelStyle}
+          checked={isProtected}
+          onChange={handleProtectChange}
+          disabled={loading}
+        />
 
-				{isProtected && (
-					<PasswordInput
-						required
-						label="Access Password"
-						placeholder="Enter access password"
-						value={form.values.password}
-						onChange={(event) => form.setFieldValue("password", event.currentTarget.value)}
-						error={form.errors.password}
-						labelProps={{
-							mb: "xs",
-						}}
-						disabled={loading}
-						icon={<IconLock size="1rem" />}
-						autoComplete="new-password"
-						mb="xs"
-					/>
-				)}
+        {isProtected && (
+          <PasswordInput
+            required
+            label="Access Password"
+            placeholder="Enter access password"
+            value={form.values.password}
+            onChange={(event) =>
+              form.setFieldValue("password", event.currentTarget.value)
+            }
+            error={form.errors.password}
+            labelProps={{
+              mb: "xs",
+            }}
+            disabled={loading}
+            icon={<IconLock size="1rem" />}
+            autoComplete="new-password"
+            mb="xs"
+          />
+        )}
 
-				<Divider label="Allowed Ad Categories" labelPosition="center" />
+        <Divider label="Allowed Ad Categories" labelPosition="center" />
 
-				<Grid columns={3} grow>
-					<Grid.Col span={1}>
-						<Checkbox value={0} onChange={handleExcludesChange} color="green" label="Erotic" styles={labelStyle} checked={!form.values.excludes.includes(0)} disabled={loading} />
-					</Grid.Col>
-					<Grid.Col span={1}>
-						<Checkbox value={1} onChange={handleExcludesChange} color="green" label="Gambling" styles={labelStyle} checked={!form.values.excludes.includes(1)} disabled={loading} />
-					</Grid.Col>
-					<Grid.Col span={1}>
-						<Checkbox value={2} onChange={handleExcludesChange} color="green" label="Software" styles={labelStyle} checked={!form.values.excludes.includes(2)} disabled={loading} />
-					</Grid.Col>
-				</Grid>
+        <Grid columns={3} grow>
+          {config.ad_categories.map((item) => (
+            <Grid.Col span={1} key={item.id}>
+              <Checkbox
+                value={item.id}
+                onChange={handleExcludedCategoriesChange}
+                color="green"
+                label={item.label}
+                styles={labelStyle}
+                checked={!form.values.excluded_categories.includes(item.id)}
+                disabled={loading}
+              />
+            </Grid.Col>
+          ))}
+        </Grid>
 
-				<Text c="dimmed" fz="sm">
-					The more ad categories you allow, the higher CPM you will get.
-				</Text>
+        <Text c="dimmed" fz="sm">
+          The more ad categories you allow, the higher CPM you will get.
+        </Text>
 
-				<Grid columns={3} grow mt="sm">
-					<Grid.Col span={1}>
-						<Button type="reset" color="gray" fullWidth onClick={handleCloseModal} disabled={loading}>
-							Cancel
-						</Button>
-					</Grid.Col>
-					<Grid.Col span={2}>
-						<Button type="submit" variant="gradient" fullWidth loading={loading}>
-							{loading ? "Processing..." : "Continue"}
-						</Button>
-					</Grid.Col>
-				</Grid>
-			</Stack>
-		</form>
-	);
+        <Grid columns={3} grow mt="sm">
+          <Grid.Col span={1}>
+            <Button
+              type="reset"
+              color="gray"
+              fullWidth
+              onClick={handleCloseModal}
+              disabled={loading}>
+              Cancel
+            </Button>
+          </Grid.Col>
+          <Grid.Col span={2}>
+            <Button
+              type="submit"
+              variant="gradient"
+              fullWidth
+              loading={loading}>
+              {loading ? "Processing..." : "Continue"}
+            </Button>
+          </Grid.Col>
+        </Grid>
+      </Stack>
+    </form>
+  );
 };
 
 export default CreateLinkModal;
