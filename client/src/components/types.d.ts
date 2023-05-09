@@ -24,6 +24,7 @@ export type Link = {
   target: string;
   password: string;
   earnings: number;
+  cpm: number;
   clicks: number;
   excludes: number[];
   created_at: string;

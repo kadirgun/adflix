@@ -18,10 +18,6 @@ const useStyles = createStyles((theme) => ({
 		right: rem(8),
 		top: rem(8),
 	},
-	stat: {
-		borderBottom: `${rem(2)} solid`,
-		paddingBottom: rem(8),
-	},
 	anchorHover: {
 		"&:hover": {
 			opacity: 0.6,
@@ -30,20 +26,33 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-const icons = {
-	click: IconClick,
-	earnings: IconCurrencyDollar,
-} as any;
-
 const LinkCard = ({ value }: ILinkCardProps) => {
-	const { clicks, domain, earnings, excludes, key, name, password, target } = value;
-	const { classes } = useStyles();
+	const { clicks, domain, earnings, cpm, excludes, key, name, password, target } = value;
+	const { classes, theme } = useStyles();
 	const config = useConfig();
 	const shortUrl = `https://${config.domains.find((item) => item.id === domain)?.name}/${key}`;
 	const favicon = `https://icon.horse/icon/?size=small&uri=${target}`;
 
+	const statsData = [
+		{
+			label: "Clicks",
+			value: clicks,
+			icon: <IconClick size={18} />,
+		},
+		{
+			label: "Earnings",
+			value: `$${earnings.toFixed(2)}`,
+			icon: <IconCurrencyDollar size={18} />,
+		},
+		{
+			label: "CPM",
+			value: `$${cpm.toFixed(2)}`,
+			icon: <IconCurrencyDollar size={18} />,
+		},
+	];
+
 	return (
-		<Card shadow="sm">
+		<Card withBorder>
 			<Card.Section py="md" px="md">
 				<Grid gutter={0} align="flex-start">
 					<Grid.Col span={10}>
@@ -144,23 +153,17 @@ const LinkCard = ({ value }: ILinkCardProps) => {
 			</Card.Section>
 
 			<Card.Section pb="lg" px="md">
-				<SimpleGrid cols={2} c="dimmed">
-					<Box className={classes.stat}>
-						<Group position="apart" align="flex-end" spacing="xs" px={2}>
-							<Text size="sm" fw={700}>
-								Clicks
-							</Text>
-							<Badge fz="xs">{clicks}</Badge>
-						</Group>
-					</Box>
-					<Box className={classes.stat}>
-						<Group position="apart" align="flex-end" spacing={0} px={2}>
-							<Text size="sm" fw={700}>
-								Earnings
-							</Text>
-							<Badge fz="xs">${earnings.toFixed(2)}</Badge>
-						</Group>
-					</Box>
+				<SimpleGrid cols={3}>
+					{statsData.map((item) => (
+						<Flex p="xs" style={{ 
+							border: `${rem(1)} dashed`,
+							borderColor: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[4],
+							borderRadius: theme.radius.sm
+						 }} key={item.label} direction="column" align="center" gap={6}>
+							<Text lh={1} size="sm" fw={700}>{item.label}</Text>
+							<Badge fz="xs">{item.value}</Badge>
+						</Flex>
+					))}
 				</SimpleGrid>
 			</Card.Section>
 

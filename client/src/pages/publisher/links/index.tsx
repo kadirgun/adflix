@@ -1,7 +1,7 @@
 import PublisherLayout from "@/layouts/PublisherLayout";
 import React, { ReactElement, useEffect, useState } from "react";
 import { DataTable } from "mantine-datatable";
-import { ActionIcon, Anchor, Button, Grid, Group, Skeleton, Stack, Text, TextInput, Title, createStyles, rem } from "@mantine/core";
+import { ActionIcon, Anchor, Button, Grid, Group, Paper, Skeleton, Stack, Text, TextInput, Title, createStyles, rem } from "@mantine/core";
 import { IconEdit, IconEye, IconPlus, IconSearch, IconTrash } from "@tabler/icons-react";
 import { handleCreateLink } from "@/core/modal";
 import { useApi } from "@/hooks";
@@ -55,8 +55,8 @@ const Index = () => {
 	}, [router]);
 
 	return (
-		<Stack>
-			<Group position="apart" mb="sm">
+		<>
+			<Group position="apart" mb="xl">
 				<Title order={3} className={classes.title}>
 					Monetized Links
 				</Title>
@@ -65,7 +65,7 @@ const Index = () => {
 				</Button>
 			</Group>
 
-			<Group position="apart" mb="md">
+			<Group position="apart" mb="lg">
 				<Group position="left">{loading ? <Skeleton w={250} h={36}></Skeleton> : <TextInput placeholder="Search..." icon={<IconSearch size={16} />} miw={250} />}</Group>
 
 				<Group position="right">
@@ -88,7 +88,7 @@ const Index = () => {
 					))}
 				</Grid>
 			)}
-		</Stack>
+		</>
 	);
 };
 
