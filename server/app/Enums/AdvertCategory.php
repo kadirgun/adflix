@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum AdsType: int {
+enum AdvertCategory: int {
   case Erotic = 1;
   case Gambling = 2;
   case Software = 3;

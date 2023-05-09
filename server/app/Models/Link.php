@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\AdsType;
+use App\Enums\AdvertCategory;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +17,7 @@ class Link extends Model
         'type' => 'int',
         'earnings' => 'float',
         'clicks' => 'int',
-        'excludes' => AsArrayObject::class.':'.AdsType::class,
+        'excludes' => AsArrayObject::class.':'.AdvertCategory::class,
     ];
 
     public function user(){

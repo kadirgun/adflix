@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\Enums\AdsType;
+use App\Enums\AdvertCategory;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -20,8 +20,8 @@ class ExcludesRule implements ValidationRule
         }
 
         foreach ($value as $item) {
-            if (is_null(AdsType::tryFrom($item))) {
-                $fail('The :attribute must be an array of ads type.');
+            if (is_null(AdvertCategory::tryFrom($item))) {
+                $fail('The :attribute must be an array of ad category.');
             }
         }
     }
