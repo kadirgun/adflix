@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->json('settings')->nullable();
+            $table->decimal('earnings', 10, 4)->default(0.00);
+            $table->integer('clicks_count')->default(0);
             $table->tinyInteger('status')->default(1);
             $table->rememberToken();
             $table->timestamps();

@@ -14,7 +14,7 @@ class HugeSeeder extends Seeder {
    * Run the database seeds.
    */
   public function run(): void {
-    for ($i = 0; $i < 100; $i++) {
+    for ($i = 0; $i < 1; $i++) {
       $clicks = [];
       for($f=0; $f < 1000; $f++) {
         $click= Click::factory()

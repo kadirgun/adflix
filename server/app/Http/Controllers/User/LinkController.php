@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Enums\ClickStatus;
 use App\Helpers\ScrapeHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\LinkResource;
+use App\Models\Click;
 use App\Rules\ExcludesRule;
 use App\Rules\LinkDomainRule;
 use App\Rules\LinkTargetRule;
@@ -20,6 +22,8 @@ class LinkController extends Controller {
             'limit' => 'nullable|integer|max:100',
             'search' => 'nullable|string|max:100',
             'filters' => 'nullable|array',
+            'order.dir' => 'nullable|string|in:asc,desc',
+            'order.column' => 'nullable|string|in:id,name,clicks,earnings,cpm',
         ]);
 
         if ($validator->fails()) {
@@ -33,11 +37,13 @@ class LinkController extends Controller {
         $search = $request->get('search', false);
 
         /**
-         * @var \Illuminate\Database\Query\Builder $query
+         * @var \Illuminate\Database\Eloquent\Builder $query
          */
 
-        $query = $request->user()->links();
+        $query = $request->user()->links()->select();
         $count = $query->count();
+
+        $query->withCPM();
 
         if ($search) {
             $query->where(function ($query) use ($search) {
@@ -47,9 +53,9 @@ class LinkController extends Controller {
             });
         }
 
-        $query->orderBy('id', 'desc')
-            ->limit($limit)
-            ->offset(($page - 1) * $limit);
+        $query->limit($limit)->offset(($page - 1) * $limit);
+
+        $query->orderBy($request->json('order.column', 'id'), $request->json('order.dir', 'desc'));
 
         if ($request->has('filters')) {
             $filters = (object) $request->get('filters');
@@ -81,7 +87,7 @@ class LinkController extends Controller {
             'target' => ['required', new LinkTargetRule],
             'password' => 'nullable|string|min:1',
             'type' => 'nullable|integer|between:1,3',
-            'excludes' => ['nullable', new ExcludesRule],
+            'excluded_categories' => ['nullable', new ExcludesRule],
             'domain' => ['required', 'integer', new LinkDomainRule]
         ]);
 
@@ -135,7 +141,7 @@ class LinkController extends Controller {
             'target' => ['required', new LinkTargetRule],
             'password' => 'nullable|string|min:1',
             'type' => 'nullable|integer|between:1,3',
-            'excludes' => ['nullable', new ExcludesRule],
+            'excluded_categories' => ['nullable', new ExcludesRule],
             'domain' => ['required', 'integer', new LinkDomainRule]
         ]);
 

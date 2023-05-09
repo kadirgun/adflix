@@ -4,37 +4,34 @@ namespace App\Observers;
 
 use App\Enums\ClickStatus;
 use App\Models\Click;
+use Illuminate\Support\Facades\Log;
 
 class ClickObserver {
-	/**
-	 * Handle the Click "created" event.
-	 */
-	public function created(Click $click): void {
-		//
+	public function updating(Click $click): void {
+		if ($click->isDirty('status')) {
+			if ($click->status === ClickStatus::Approved) {
+				$click->link->increment('clicks_count');
+				$click->link->increment('earnings', $click->earnings);
+			}
+		}
+
+		if($click->isDirty('earnings')) {
+			if($click->status === ClickStatus::Approved){
+				$click->link->increment('earnings', $click->earnings - $click->getOriginal('earnings'));
+			}
+		}
 	}
 
 	/**
 	 * Handle the Click "updated" event.
 	 */
 	public function updated(Click $click): void {
-		if ($click->status == ClickStatus::Approved) {
-			$click->link()->increment('clicks');
-			$click->link()->increment('earnings', $click->earnings);
-			$click->user()->increment('earnings', $click->earnings);
-		} else if ($click->status == ClickStatus::Rejected) {
-			$click->user()->decrement('earnings', $click->earnings);
-			$click->link()->decrement('earnings', $click->earnings);
-			$click->link()->increment('clicks');
-		}
 	}
 
 	/**
 	 * Handle the Click "deleted" event.
 	 */
 	public function deleted(Click $click): void {
-		$click->user()->decrement('earnings', $click->earnings);
-		$click->link()->decrement('earnings', $click->earnings);
-		$click->link()->increment('clicks');
 	}
 
 	/**
