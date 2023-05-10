@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Click;
+use App\Models\Conversion;
 use App\Observers\ClickObserver;
+use App\Observers\ConversionObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -28,6 +30,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Click::observe(ClickObserver::class);
+        Conversion::observe(ConversionObserver::class);
     }
 
     /**

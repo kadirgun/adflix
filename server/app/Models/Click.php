@@ -24,7 +24,16 @@ class Click extends Model {
         return $this->belongsTo(User::class);
     }
 
-    public function scopeApproved(Builder $query){
+    public function conversions() {
+        return $this->hasMany(Conversion::class);
+    }
+
+    public function scopeApproved(Builder $query) {
         $query->where('status', ClickStatus::Approved);
+    }
+
+    public function sync() {
+        $this->earnings = $this->conversions()->sum('earnings');
+        $this->save();
     }
 }
