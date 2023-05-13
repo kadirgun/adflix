@@ -47,8 +47,6 @@ class LinkController extends Controller {
         $query->withClicksCount();
         $query->withEarnings();
 
-        return $query->toSql();
-
         if ($search) {
             $query->where(function ($query) use ($search) {
                 $query->where('target', 'like', "%$search%")
