@@ -37,8 +37,19 @@ class Click extends Model {
         return $this->belongsTo(Visitor::class);
     }
 
+    public function report(): Report {
+        return Report::firstOrCreate([
+            'link_id' => $this->link_id,
+            'date' => $this->created_at->toDateString(),
+            'country_id' => $this->visitor->network->country_id,
+            'browser_id' => $this->visitor->device->browser_id,
+            'os_id' => $this->visitor->device->os_id,
+            'device_type_id' => $this->visitor->device->device_type_id,
+        ]);
+    }
+
     public function scopeApproved(Builder $query) {
-        $query->where('status', ClickStatus::Approved);
+        $query->where('status', ClickStatus::Success);
     }
 
     public function scopeWithEarnings(Builder $query) {

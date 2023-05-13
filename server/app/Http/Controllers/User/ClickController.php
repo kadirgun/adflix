@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ClickController extends Controller {
     public function list() {
-        $clicks = auth()->user()->clicks()->where('status', ClickStatus::Approved)->limit(1000)->get();
+        $clicks = auth()->user()->clicks()->where('status', ClickStatus::Success)->limit(1000)->get();
 
         return response()->json(ClickResource::collection($clicks));
     }
@@ -40,7 +40,7 @@ class ClickController extends Controller {
             ->where('user_id', auth()->id())
             ->selectRaw('count(clicks.id) as clicks, sum(clicks.earnings) as earnings')
             ->whereBetween('clicks.created_at', [$request->from, $request->to])
-            ->where('status', ClickStatus::Approved);
+            ->where('status', ClickStatus::Success);
 
         if ($request->group) {
             $builder->addSelect($request->group);

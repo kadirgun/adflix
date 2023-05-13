@@ -47,6 +47,7 @@ services:
       - ./server:/var/www/adflix/server
       - ./.env:/var/www/adflix/server/.env
       - ./config/php.ini:/usr/local/etc/php/php.ini
+      - ./data:/var/www/adflix/server/storage/app/data
     depends_on:
       redis:
         condition: service_healthy

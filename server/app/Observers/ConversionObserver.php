@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\ClickStatus;
 use App\Models\Conversion;
 
 class ConversionObserver {
@@ -9,7 +10,10 @@ class ConversionObserver {
      * Handle the Conversion "created" event.
      */
     public function created(Conversion $conversion): void {
-        //
+        $click = $conversion->click;
+        if($click->status == ClickStatus::Success){
+            $click->report()->increment('earnings', $conversion->earnings);
+        }
     }
 
     /**

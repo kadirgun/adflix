@@ -23,10 +23,7 @@ class HugeSeeder extends Seeder {
   public function run(): void {
     $device = Device::createWihtUserAgent('Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.210 Mobile Safari/537.36');
 
-    $country = Country::firstOrCreate([
-      'code' => 'US',
-      'name' => 'United States'
-    ]);
+    $country = Country::inRandomOrder()->first();
 
     $network = Network::create([
       'ip' => '127.0.0.1',

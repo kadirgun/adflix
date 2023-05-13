@@ -18,9 +18,6 @@ use Illuminate\Support\Str;
 
 class LinkController extends Controller {
     public function list(Request $request) {
-        $click = Click::find(1);
-        ClickReport::dispatch($click);
-
         $validator = Validator::make($request->all(), [
             'page' => 'nullable|integer',
             'limit' => 'nullable|integer|max:100',

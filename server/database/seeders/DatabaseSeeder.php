@@ -7,13 +7,11 @@ namespace Database\Seeders;
 use App\Models\Device;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
-{
+class DatabaseSeeder extends Seeder {
     /**
      * Seed the application's database.
      */
-    public function run(): void
-    {
+    public function run(): void {
         $this->call([
             UserSeeder::class,
             LinkSeeder::class,
@@ -21,6 +19,7 @@ class DatabaseSeeder extends Seeder
             BrowserSeeder::class,
             OsSeeder::class,
             DeviceTypeSeeder::class,
+            CountrySeeder::class,
         ]);
     }
 }
