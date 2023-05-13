@@ -38,16 +38,21 @@ class ClickController extends Controller {
 
         $builder = Click::query()
             ->where('user_id', auth()->id())
-            ->selectRaw('count(*) as clicks, sum(earnings) as earnings')
-            ->whereBetween('created_at', [$request->from, $request->to])
+            ->selectRaw('count(clicks.id) as clicks, sum(clicks.earnings) as earnings')
+            ->whereBetween('clicks.created_at', [$request->from, $request->to])
             ->where('status', ClickStatus::Approved);
 
         if ($request->group) {
             $builder->addSelect($request->group);
             $builder->groupBy($request->group);
         } else {
-            $builder->addSelect(DB::raw('DATE(created_at) as date'));
-            $builder->groupBy('date');
+            // $builder->addSelect(DB::raw('DATE(created_at) as date'));
+            // $builder->groupBy('date');
+            $builder->join('visitors', 'clicks.visitor_id', '=', 'visitors.id');
+            $builder->join('browsers', 'visitors.browser_id', '=', 'browsers.id');
+            $builder->addSelect('browsers.name as browser');
+            $builder->groupBy('browser');
+            // return $builder->toSql();
         }
 
         if ($request->filters) {

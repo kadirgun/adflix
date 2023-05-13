@@ -5,16 +5,25 @@ namespace App\Observers;
 use App\Models\Conversion;
 
 class ConversionObserver {
+    /**
+     * Handle the Conversion "created" event.
+     */
     public function created(Conversion $conversion): void {
-        $conversion->click->sync();
+        //
     }
 
+    /**
+     * Handle the Conversion "updated" event.
+     */
     public function updated(Conversion $conversion): void {
-        $conversion->click->sync();
+        //
     }
 
+    /**
+     * Handle the Conversion "deleted" event.
+     */
     public function deleted(Conversion $conversion): void {
-        $conversion->click->sync();
+        //
     }
 
     /**

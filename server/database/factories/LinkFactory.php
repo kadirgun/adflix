@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Link>
@@ -17,7 +18,9 @@ class LinkFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'target' => $this->faker->url(),
+            'domain' => 1,
+            'key' => Str::random(6)
         ];
     }
 }

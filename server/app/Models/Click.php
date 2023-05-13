@@ -16,6 +16,11 @@ class Click extends Model {
         'earnings' => 'float',
     ];
 
+    protected $attributes = [
+        'status' => ClickStatus::Pending,
+        'earnings' => 0,
+    ];
+
     public function link() {
         return $this->belongsTo(Link::class);
     }
@@ -28,12 +33,15 @@ class Click extends Model {
         return $this->hasMany(Conversion::class);
     }
 
+    public function visitor() {
+        return $this->belongsTo(Visitor::class);
+    }
+
     public function scopeApproved(Builder $query) {
         $query->where('status', ClickStatus::Approved);
     }
 
-    public function sync() {
-        $this->earnings = $this->conversions()->sum('earnings');
-        $this->save();
+    public function scopeWithEarnings(Builder $query) {
+        $query->withSum('conversions', 'earnings');
     }
 }

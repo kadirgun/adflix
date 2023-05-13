@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\ClickStatus;
 use App\Enums\LinkDomain;
 use App\Enums\LinkType;
+use App\Models\Link;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -20,15 +21,8 @@ class ObserverTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $link = $user->links()->create([
-            'title' => 'Test',
-            'target' => 'https://google.com',
-            'type' => LinkType::Url,
-            'domain' => 1,
-            'key' => Str::random(6),
-            'earnings' => 0,
-            'clicks' => 0,
-            'excluded_categories' => [],
+        $link = Link::factory()->create([
+            'user_id' => $user->id,
         ]);
 
         $this->assertDatabaseHas('links', [

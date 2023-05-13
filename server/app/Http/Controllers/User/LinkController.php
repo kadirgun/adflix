@@ -6,6 +6,7 @@ use App\Enums\ClickStatus;
 use App\Helpers\ScrapeHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\LinkResource;
+use App\Jobs\ClickReport;
 use App\Models\Click;
 use App\Rules\ExcludesRule;
 use App\Rules\LinkDomainRule;
@@ -17,6 +18,9 @@ use Illuminate\Support\Str;
 
 class LinkController extends Controller {
     public function list(Request $request) {
+        $click = Click::find(1);
+        ClickReport::dispatch($click);
+
         $validator = Validator::make($request->all(), [
             'page' => 'nullable|integer',
             'limit' => 'nullable|integer|max:100',
@@ -43,7 +47,10 @@ class LinkController extends Controller {
         $query = $request->user()->links()->select();
         $count = $query->count();
 
-        $query->withCPM();
+        $query->withClicksCount();
+        $query->withEarnings();
+
+        return $query->toSql();
 
         if ($search) {
             $query->where(function ($query) use ($search) {

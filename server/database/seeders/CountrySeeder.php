@@ -2,16 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Enums\ClickStatus;
-use App\Models\Click;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
-class ClickSeeder extends Seeder {
+class CountrySeeder extends Seeder
+{
     /**
      * Run the database seeds.
      */
-    public function run(): void {
+    public function run(): void
+    {
+        $countries = [
+            
+        ];
     }
 }

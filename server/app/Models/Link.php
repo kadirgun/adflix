@@ -31,13 +31,19 @@ class Link extends Model {
         return $this->hasMany(Click::class);
     }
 
-    public function scopeWithCPM(Builder $query){
-        $query->addSelect(['cpm' => DB::raw('(earnings / clicks_count) * 1000 as cpm')]);
+    public function reports() {
+        return $this->hasMany(Report::class);
     }
 
-    public function sync(){
-        $this->clicks_count = $this->clicks()->count();
+    public function conversions() {
+        return $this->hasManyThrough(Conversion::class, Click::class);
+    }
 
-        $this->save();
+    public function scopeWithEarnings(Builder $query) {
+        $query->withSum('reports as earnings', 'earnings');
+    }
+
+    public function scopeWithClicksCount(Builder $query) {
+        $query->withSum('reports as clicks_count', 'clicks_count');
     }
 }

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Device;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,7 +17,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             LinkSeeder::class,
-            ClickSeeder::class
+            ClickSeeder::class,
+            BrowserSeeder::class,
+            OsSeeder::class,
+            DeviceTypeSeeder::class,
         ]);
     }
 }
