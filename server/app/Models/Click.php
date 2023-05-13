@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Click extends Model {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'status'];
     protected $casts = [
         'status' => ClickStatus::class,
         'earnings' => 'float',
@@ -35,6 +35,11 @@ class Click extends Model {
 
     public function visitor() {
         return $this->belongsTo(Visitor::class);
+    }
+    
+    public function setStatus(ClickStatus $status){
+        $this->status = $status;
+        $this->save();
     }
 
     public function report(): Report {

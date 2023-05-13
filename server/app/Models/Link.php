@@ -3,18 +3,16 @@
 namespace App\Models;
 
 use App\Enums\AdvertCategory;
-use App\Enums\ClickStatus;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class Link extends Model {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'status'];
     protected $casts = [
         'type' => 'int',
         'earnings' => 'float',
