@@ -27,6 +27,8 @@ class EventServiceProvider extends ServiceProvider {
      * Register any events for your application.
      */
     public function boot(): void {
+        Click::observe(ClickObserver::class);
+        Conversion::observe(ConversionObserver::class);
     }
 
     /**

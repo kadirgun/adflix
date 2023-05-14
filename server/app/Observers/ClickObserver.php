@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\ClickStatus;
 use App\Models\Click;
 
 class ClickObserver {
@@ -16,7 +17,12 @@ class ClickObserver {
      * Handle the Click "updated" event.
      */
     public function updated(Click $click): void {
-        //
+        if($click->status == ClickStatus::Completed){
+            $report = $click->report();
+            $report->earnings += $click->conversions->sum('earnings');
+            $report->clicks_count += 1;
+            $report->save();
+        }
     }
 
     /**

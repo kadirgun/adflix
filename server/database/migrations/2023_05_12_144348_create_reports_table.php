@@ -19,8 +19,9 @@ return new class extends Migration
             $table->foreignId('os_id')->constrained()->cascadeOnDelete();
             $table->foreignId('device_type_id')->constrained()->cascadeOnDelete();
             $table->foreignId('country_id')->constrained()->cascadeOnDelete();
-            $table->integer('clicks_count');
-            $table->decimal('earnings');
+            $table->integer('clicks_count')->default(0);
+            $table->decimal('earnings', 10, 4)->default(0);
+            $table->decimal('cpm', 10, 4)->default(0);
             $table->date('date');
         });
     }

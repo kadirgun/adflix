@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Conversion extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function click() {
+        return $this->belongsTo(Click::class);
+    }
 }

@@ -11,12 +11,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ClickController extends Controller {
-    public function list() {
-        $clicks = auth()->user()->clicks()->where('status', ClickStatus::Success)->limit(1000)->get();
-
-        return response()->json(ClickResource::collection($clicks));
-    }
-
     public function report(Request $request) {
         $validator = Validator::make($request->all(), [
             'from' => 'required|date',
@@ -36,23 +30,16 @@ class ClickController extends Controller {
          * @var \Illuminate\Database\Query\Builder $builder
          */
 
-        $builder = Click::query()
-            ->where('user_id', auth()->id())
-            ->selectRaw('count(clicks.id) as clicks, sum(clicks.earnings) as earnings')
-            ->whereBetween('clicks.created_at', [$request->from, $request->to])
-            ->where('status', ClickStatus::Success);
+        $builder = $request->user()->reports()
+            ->selectRaw('SUM(earnings) as earnings, SUM(clicks_count) as clicks_count, AVG(cpm) as cpm')
+            ->whereBetween('date', [$request->from, $request->to]);
 
         if ($request->group) {
             $builder->addSelect($request->group);
             $builder->groupBy($request->group);
         } else {
-            // $builder->addSelect(DB::raw('DATE(created_at) as date'));
-            // $builder->groupBy('date');
-            $builder->join('visitors', 'clicks.visitor_id', '=', 'visitors.id');
-            $builder->join('browsers', 'visitors.browser_id', '=', 'browsers.id');
-            $builder->addSelect('browsers.name as browser');
-            $builder->groupBy('browser');
-            // return $builder->toSql();
+            $builder->addSelect('date');
+            $builder->groupBy('date');
         }
 
         if ($request->filters) {
@@ -61,8 +48,8 @@ class ClickController extends Controller {
             }
         }
 
-        $clicks = $builder->get();
+        $reports = $builder->get();
 
-        return response()->json($clicks);
+        return response()->json($reports);
     }
 }

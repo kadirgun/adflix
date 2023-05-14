@@ -17,8 +17,7 @@ class Click extends Model {
     ];
 
     protected $attributes = [
-        'status' => ClickStatus::Pending,
-        'earnings' => 0,
+        'status' => ClickStatus::Pending
     ];
 
     public function link() {
@@ -44,6 +43,7 @@ class Click extends Model {
 
     public function report(): Report {
         return Report::firstOrCreate([
+            'user_id' => $this->user_id,
             'link_id' => $this->link_id,
             'date' => $this->created_at->toDateString(),
             'country_id' => $this->visitor->network->country_id,
@@ -54,7 +54,7 @@ class Click extends Model {
     }
 
     public function scopeApproved(Builder $query) {
-        $query->where('status', ClickStatus::Success);
+        $query->where('status', ClickStatus::Completed);
     }
 
     public function scopeWithEarnings(Builder $query) {

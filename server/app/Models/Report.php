@@ -13,6 +13,13 @@ class Report extends Model {
     protected $guarded = ['id'];
     public $timestamps = false;
 
+    protected $casts = [
+        'date' => 'date:Y-m-d',
+        'earnings' => 'float',
+        'clicks_count' => 'int',
+        'cpm' => 'float'
+    ];
+
     public function link() {
         return $this->belongsTo(Link::class);
     }
@@ -33,7 +40,7 @@ class Report extends Model {
             });
     }
 
-    public function earnings() {
+    public function clickEarnings() {
         return $this->clicks()
             ->whereHas('conversions')
             ->join('conversions', 'conversions.click_id', '=', 'clicks.id')
@@ -45,8 +52,14 @@ class Report extends Model {
     }
 
     public function sync() {
-        $this->earnings = $this->earnings();
+        $this->earnings = $this->clickEarnings();
         $this->clicks_count = $this->clicksCount();
         $this->save();
+    }
+
+    protected static function booted(): void {
+        static::saving(function (Report $report) {
+            $report->cpm = $report->clicks_count > 0 ? $report->earnings / $report->clicks_count * 1000 : 0;
+        });
     }
 }

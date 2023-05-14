@@ -10,9 +10,10 @@ class ConversionObserver {
      * Handle the Conversion "created" event.
      */
     public function created(Conversion $conversion): void {
-        $click = $conversion->click;
-        if($click->status == ClickStatus::Success){
-            $click->report()->increment('earnings', $conversion->earnings);
+        if($conversion->click->status == ClickStatus::Completed){
+            $report = $conversion->click->report();
+            $report->earnings += $conversion->earnings;
+            $report->save();
         }
     }
 

@@ -37,11 +37,9 @@ class Link extends Model {
         return $this->hasManyThrough(Conversion::class, Click::class);
     }
 
-    public function scopeWithEarnings(Builder $query) {
+    public function scopeWithStats(Builder $query) {
         $query->withSum('reports as earnings', 'earnings');
-    }
-
-    public function scopeWithClicksCount(Builder $query) {
         $query->withSum('reports as clicks_count', 'clicks_count');
+        $query->withSum('reports as cpm', 'cpm');
     }
 }

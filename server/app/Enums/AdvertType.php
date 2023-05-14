@@ -6,6 +6,7 @@ enum AdvertType: int {
   case Banner = 1;
   case VAST = 2;
   case Popunder = 3;
+  case Direct = 4;
 
   public static function labels(){
     $labels = [];
@@ -23,7 +24,8 @@ enum AdvertType: int {
     return match($value){
       self::Banner => 'Banner Ads',
       self::VAST => 'Vast Ads',
-      self::Popunder => 'Popunder Ads'
+      self::Popunder => 'Popunder Ads',
+      self::Direct => 'Direct Link Ads',
     };
   }
 }

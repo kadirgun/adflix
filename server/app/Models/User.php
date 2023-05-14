@@ -39,8 +39,12 @@ class User extends Authenticatable {
         return $this->hasMany(Link::class);
     }
 
-    public function clicks(){
+    public function clicks() {
         return $this->hasMany(Click::class);
+    }
+
+    public function reports() {
+        return $this->hasMany(Report::class);
     }
 
     public function getVerifiedAttribute() {

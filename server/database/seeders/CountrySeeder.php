@@ -13,9 +13,11 @@ class CountrySeeder extends Seeder {
      */
     public function run(): void {
         $data = Storage::get('data/countries.json');
-        $countries = json_decode($data);
-        foreach ($countries as $country) {
-            Country::firstOrCreate([
+        $data = json_decode($data);
+        $countries = Country::all();
+        foreach ($data as $country) {
+            if($countries->contains('code', $country->code)) continue;
+            Country::create([
                 'name' => $country->name,
                 'code' => $country->code,
             ]);

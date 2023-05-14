@@ -44,8 +44,7 @@ class LinkController extends Controller {
         $query = $request->user()->links()->select();
         $count = $query->count();
 
-        $query->withClicksCount();
-        $query->withEarnings();
+        $query->withStats();
 
         if ($search) {
             $query->where(function ($query) use ($search) {
