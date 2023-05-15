@@ -19,14 +19,16 @@ import { notifications } from "@mantine/notifications";
 import { IconLink, IconLock, IconWorldWww } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
+import { Link } from "../types";
 
 const labelStyle = {
   label: { paddingLeft: rem(8) },
 };
 
-const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
+const EditLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
+  const value = innerProps as Link;
   const [loading, setLoading] = useState<boolean>(false);
-  const [isProtected, setIsProtected] = useState<boolean>(false);
+  const [isProtected, setIsProtected] = useState<boolean>(value.password !== ("" || null));
 
   const api = useApi();
   const config = useConfig();
@@ -39,10 +41,10 @@ const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
 
   const form = useForm({
     initialValues: {
-      target: "",
-      excluded_categories: [] as any[],
-      password: "",
-      domain: config.domains.find(() => true)?.id,
+      target: value.target,
+      excluded_categories: value.excluded_categories as any[],
+      password: value.password,
+      domain: config.domains.find((item) => item.id === value.domain)?.id,
     },
 
     validate: {
@@ -85,12 +87,12 @@ const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
   const handleSubmit = useCallback(() => {
     setLoading(true);
     api.links
-      .create(form.values)
+      .edit(value.id, form.values)
       .then((response) => {
         console.log(response.data);
         notifications.show({
-          title: "Link Created",
-          message: "Your monetized link has been created successfully.",
+          title: "Link Updated",
+          message: "Your monetized link has been updated successfully.",
           color: "green",
         });
         handleCloseModal();
@@ -230,7 +232,7 @@ const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
               variant="gradient"
               fullWidth
               loading={loading}>
-              {loading ? "Processing..." : "Continue"}
+              {loading ? "Processing..." : "Update"}
             </Button>
           </Grid.Col>
         </Grid>
@@ -239,4 +241,4 @@ const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
   );
 };
 
-export default CreateLinkModal;
+export default EditLinkModal;

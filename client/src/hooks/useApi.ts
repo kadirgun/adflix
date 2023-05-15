@@ -30,6 +30,12 @@ export default () => {
       },
       create: async (params: ICreateLink) => {
         return await axios.post("/links", params)
+      },
+      edit: async (id: number, params: ICreateLink) => {
+        return await axios.put(`/links/${id}`, params)
+      },
+      delete: async (id: number) => {
+        return await axios.delete(`/links/${id}`)
       }
     }
   }

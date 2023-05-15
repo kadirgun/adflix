@@ -3,6 +3,7 @@ import { Card, Text, Group, Badge, ActionIcon, createStyles, rem, Avatar, Chip, 
 import { ILinkCardProps } from "../types";
 import useConfig from "@/hooks/useConfig";
 import { IconDotsVertical } from "@tabler/icons-react";
+import { handleEditLink } from "@/core/modal";
 
 const useStyles = createStyles((theme) => ({
 	shortLink: {
@@ -78,7 +79,7 @@ const LinkCard = ({ value }: ILinkCardProps) => {
 								</ActionIcon>
 							</Menu.Target>
 							<Menu.Dropdown>
-								<Menu.Item icon={<IconEdit size={rem(14)} />} color="blue">
+								<Menu.Item icon={<IconEdit size={rem(14)} />} color="blue" onClick={() => handleEditLink({value})}>
 									Edit
 								</Menu.Item>
 								<Menu.Item icon={<IconTrash size={rem(14)} />} color="red">

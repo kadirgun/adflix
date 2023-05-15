@@ -1,13 +1,10 @@
 import PublisherLayout from "@/layouts/PublisherLayout";
-import React, { ReactElement, useEffect, useState } from "react";
-import { DataTable } from "mantine-datatable";
-import { ActionIcon, Anchor, Button, Grid, Group, Paper, Skeleton, Stack, Text, TextInput, Title, createStyles, rem } from "@mantine/core";
-import { IconEdit, IconEye, IconPlus, IconSearch, IconTrash } from "@tabler/icons-react";
+import { ReactElement, useEffect, useState } from "react";
+import { Button, Grid, Group, Skeleton, TextInput, Title, createStyles, rem } from "@mantine/core";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { handleCreateLink } from "@/core/modal";
 import { useApi } from "@/hooks";
 import { notifications } from "@mantine/notifications";
-import Moment from "moment";
-import useConfig from "@/hooks/useConfig";
 import { Link } from "@/components/types";
 import LinkCard from "@/components/publisher/LinkCard";
 import { useRouter } from "next/router";
@@ -33,7 +30,6 @@ const Index = () => {
 	const router = useRouter();
 
 	const [data, setData] = useState<Link[]>([]);
-	const [selectedRecords, setSelectedRecords] = useState<any[]>([]);
 
 	const [loading, setLoading] = useState<boolean>(true);
 
@@ -67,14 +63,6 @@ const Index = () => {
 
 			<Group position="apart" mb="lg">
 				<Group position="left">{loading ? <Skeleton w={250} h={36}></Skeleton> : <TextInput placeholder="Search..." icon={<IconSearch size={16} />} miw={250} />}</Group>
-
-				<Group position="right">
-					{selectedRecords.length && (
-						<Button color="red" leftIcon={<IconTrash size={rem(15)} />} onClick={handleCreateLink} miw={120}>
-							Delete {selectedRecords.length} records
-						</Button>
-					)}
-				</Group>
 			</Group>
 
 			{loading ? (
@@ -83,8 +71,8 @@ const Index = () => {
 				<Grid>
 					{data.map((link) => (
 						<Grid.Col xs={12} lg={6} xl={4} key={link.key}>
-              <LinkCard value={link} />
-            </Grid.Col>
+							<LinkCard value={link} />
+						</Grid.Col>
 					))}
 				</Grid>
 			)}

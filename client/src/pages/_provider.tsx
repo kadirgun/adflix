@@ -4,6 +4,7 @@ import { Notifications } from "@mantine/notifications";
 import RouterTransition from "@/components/RouterTransition";
 import CreateLinkModal from "@/components/publisher/CreateLinkModal";
 import { useUi } from "@/hooks";
+import EditLinkModal from "@/components/publisher/EditLinkModal";
 
 const Provider = ({ children }: any) => {
 	const ui = useUi();
@@ -18,7 +19,7 @@ const Provider = ({ children }: any) => {
 					focusRing: "never",
 				}}
 			>
-				<ModalsProvider modals={{ createLink: CreateLinkModal }}>
+				<ModalsProvider modals={{ createLink: CreateLinkModal, editLink: EditLinkModal }}>
 					<RouterTransition />
 					<Notifications position="top-right" />
 					{children}
