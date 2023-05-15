@@ -6,7 +6,7 @@ use App\Enums\AdvertCategory;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ExcludesRule implements ValidationRule
+class LinkExcludedCategoriesRule implements ValidationRule
 {
     /**
      * Run the validation rule.

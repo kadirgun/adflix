@@ -14,6 +14,10 @@ class ConversionObserver {
             $report = $conversion->click->report();
             $report->earnings += $conversion->earnings;
             $report->save();
+
+            $link = $conversion->click->link;
+            $link->earnings += $conversion->earnings;
+            $link->save();
         }
     }
 

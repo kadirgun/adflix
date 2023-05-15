@@ -14,4 +14,8 @@ class Conversion extends Model
     public function click() {
         return $this->belongsTo(Click::class);
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

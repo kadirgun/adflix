@@ -17,10 +17,11 @@ class CountrySeeder extends Seeder {
         $countries = Country::all();
         foreach ($data as $country) {
             if($countries->contains('code', $country->code)) continue;
-            Country::create([
+            $created = Country::create([
                 'name' => $country->name,
                 'code' => $country->code,
             ]);
+            $countries->push($created);
         }
     }
 }

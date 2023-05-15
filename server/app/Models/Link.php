@@ -16,7 +16,7 @@ class Link extends Model {
     protected $casts = [
         'type' => 'int',
         'earnings' => 'float',
-        'clicks' => 'int',
+        'clicks_count' => 'int',
         'excluded_categories' => AsArrayObject::class . ':' . AdvertCategory::class,
         'cpm' => 'float'
     ];
@@ -29,6 +29,10 @@ class Link extends Model {
         return $this->hasMany(Click::class);
     }
 
+    public function summary() {
+        return $this->hasOne(LinkSummary::class);
+    }
+
     public function reports() {
         return $this->hasMany(Report::class);
     }
@@ -37,9 +41,11 @@ class Link extends Model {
         return $this->hasManyThrough(Conversion::class, Click::class);
     }
 
-    public function scopeWithStats(Builder $query) {
-        $query->withSum('reports as earnings', 'earnings');
-        $query->withSum('reports as clicks_count', 'clicks_count');
-        $query->withSum('reports as cpm', 'cpm');
+    public static function boot() {
+        parent::boot();
+
+        static::saving(function (Link $link) {
+            $link->cpm = $link->clicks_count > 0 ? $link->earnings / $link->clicks_count * 1000 : 0;
+        });
     }
 }

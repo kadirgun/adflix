@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('target');
             $table->string('password')->nullable();
             $table->string('excluded_categories')->default('[]');
+            $table->decimal('earnings', 10, 4)->default(0);
+            $table->integer('clicks_count')->default(0);
+            $table->decimal('cpm', 8, 2)->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

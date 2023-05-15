@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\User\LinkResource;
 use App\Jobs\ClickReport;
 use App\Models\Click;
-use App\Rules\ExcludesRule;
+use App\Rules\LinkExcludedCategoriesRule;
 use App\Rules\LinkDomainRule;
 use App\Rules\LinkTargetRule;
 use Illuminate\Http\Request;
@@ -43,8 +43,6 @@ class LinkController extends Controller {
 
         $query = $request->user()->links()->select();
         $count = $query->count();
-
-        $query->withStats();
 
         if ($search) {
             $query->where(function ($query) use ($search) {
@@ -88,7 +86,7 @@ class LinkController extends Controller {
             'target' => ['required', new LinkTargetRule],
             'password' => 'nullable|string|min:1',
             'type' => 'nullable|integer|between:1,3',
-            'excluded_categories' => ['nullable', new ExcludesRule],
+            'excluded_categories' => ['nullable', new LinkExcludedCategoriesRule],
             'domain' => ['required', 'integer', new LinkDomainRule]
         ]);
 
@@ -142,9 +140,16 @@ class LinkController extends Controller {
             'target' => ['required', new LinkTargetRule],
             'password' => 'nullable|string|min:1',
             'type' => 'nullable|integer|between:1,3',
-            'excluded_categories' => ['nullable', new ExcludesRule],
-            'domain' => ['required', 'integer', new LinkDomainRule]
+            'excluded_categories' => ['nullable', new LinkExcludedCategoriesRule],
+            'domain' => ['nullable', 'integer', new LinkDomainRule],
+            'name' => 'nullable|string|max:100',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
 
         $link = $request->user()->links()->where('id', $id)->first();
 

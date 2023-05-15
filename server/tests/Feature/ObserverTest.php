@@ -77,15 +77,24 @@ class ObserverTest extends TestCase {
         $this->assertEquals(1, $report->clicks_count, 'The report should have the correct clicks count');
         $this->assertEquals(500, $report->cpm, 'The report should have the correct CPM');
 
+        $link->refresh();
+        $this->assertEquals(0.5, $link->earnings, 'The link should have the correct earnings');
+        $this->assertEquals(1, $link->clicks_count, 'The link should have the correct clicks count');
+        $this->assertEquals(500, $link->cpm, 'The link should have the correct CPM');
+
         $click->conversions()->create([
             'advert_id' => $advert->id,
             'earnings' => 0.5
         ]);
 
         $report->refresh();
-
         $this->assertEquals(1, $report->clicks_count, 'The report should have the correct clicks count');
         $this->assertEquals(1, $report->earnings, 'The report should have the correct earnings');
         $this->assertEquals(1000, $report->cpm, 'The report should have the correct CPM');
+
+        $link->refresh();
+        $this->assertEquals(1, $link->earnings, 'The link should have the correct earnings');
+        $this->assertEquals(1, $link->clicks_count, 'The link should have the correct clicks count');
+        $this->assertEquals(1000, $link->cpm, 'The link should have the correct CPM');
     }
 }

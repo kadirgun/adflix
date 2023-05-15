@@ -18,10 +18,17 @@ class ClickObserver {
      */
     public function updated(Click $click): void {
         if($click->status == ClickStatus::Completed){
+            $conversions = $click->conversions()->get();
+
             $report = $click->report();
-            $report->earnings += $click->conversions->sum('earnings');
+            $report->earnings += $conversions->sum('earnings');
             $report->clicks_count += 1;
             $report->save();
+
+            $link = $click->link;
+            $link->earnings += $conversions->sum('earnings');
+            $link->clicks_count += 1;
+            $link->save();
         }
     }
 

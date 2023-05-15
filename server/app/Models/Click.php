@@ -35,6 +35,10 @@ class Click extends Model {
     public function visitor() {
         return $this->belongsTo(Visitor::class);
     }
+
+    public function summary(){
+        return $this->hasOne(ClickSummary::class, 'link_id', 'link_id');
+    }
     
     public function setStatus(ClickStatus $status){
         $this->status = $status;
