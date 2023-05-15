@@ -20,7 +20,7 @@ class ObserverTest extends TestCase {
     /**
      * A basic feature test example.
      */
-    public function test_observers(): void {
+    public function test_clicks(): void {
         $user = User::find(1);
 
         $link = Link::factory()->create([

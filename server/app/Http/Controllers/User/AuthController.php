@@ -48,6 +48,12 @@ class AuthController extends Controller {
             'password' => 'required|string|min:6',
         ]);
 
+        if($validator->fails()){
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
         $user = User::where('email', $request->email)->first();
         
         if (!$user || !Hash::check($request->password, $user->password)){
