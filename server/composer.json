@@ -13,6 +13,7 @@
         "laravel/framework": "^10.8",
         "laravel/octane": "^1.5",
         "laravel/sanctum": "^3.2",
+        "laravel/telescope": "^4.14",
         "laravel/tinker": "^2.8",
         "spiral/roadrunner": "^2.8.2"
     },

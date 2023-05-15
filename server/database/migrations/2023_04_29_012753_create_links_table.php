@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('links', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('domain_id')->constrained();
             $table->string('key')->unique()->index();
             $table->string('name')->nullable();
-            $table->integer('domain');
             $table->tinyInteger('type')->default(1);
             $table->string('target');
             $table->string('password')->nullable();

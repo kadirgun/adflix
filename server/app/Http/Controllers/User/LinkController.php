@@ -87,7 +87,7 @@ class LinkController extends Controller {
             'password' => 'nullable|string|min:1',
             'type' => 'nullable|integer|between:1,3',
             'excluded_categories' => ['nullable', new LinkExcludedCategoriesRule],
-            'domain' => ['required', 'integer', new LinkDomainRule]
+            'domain_id' => ['required', 'integer', new LinkDomainRule]
         ]);
 
         if ($validator->fails()) {
@@ -141,7 +141,7 @@ class LinkController extends Controller {
             'password' => 'nullable|string|min:1',
             'type' => 'nullable|integer|between:1,3',
             'excluded_categories' => ['nullable', new LinkExcludedCategoriesRule],
-            'domain' => ['nullable', 'integer', new LinkDomainRule],
+            'domain_id' => ['nullable', 'integer', new LinkDomainRule],
             'name' => 'nullable|string|max:100',
         ]);
 

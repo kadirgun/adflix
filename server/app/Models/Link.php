@@ -41,6 +41,10 @@ class Link extends Model {
         return $this->hasManyThrough(Conversion::class, Click::class);
     }
 
+    public function domain(){
+        return $this->belongsTo(Domain::class);
+    }
+
     public static function boot() {
         parent::boot();
 
