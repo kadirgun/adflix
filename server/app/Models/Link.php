@@ -20,6 +20,7 @@ class Link extends Model {
         'excluded_categories' => AsArrayObject::class . ':' . AdvertCategory::class,
         'cpm' => 'float'
     ];
+    protected $with = ['domain'];
 
     public function user() {
         return $this->belongsTo(User::class);
