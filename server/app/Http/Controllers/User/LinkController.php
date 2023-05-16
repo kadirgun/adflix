@@ -34,7 +34,7 @@ class LinkController extends Controller {
         }
 
         $page = $request->get('page', 1);
-        $limit = $request->get('limit', 10);
+        $limit = $request->get('limit', 9);
         $search = $request->get('search', false);
 
         /**
