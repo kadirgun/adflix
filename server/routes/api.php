@@ -5,19 +5,7 @@ use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ClickController;
 use App\Http\Controllers\User\LinkController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register'])->name('user.register');
@@ -25,7 +13,7 @@ Route::prefix('auth')->group(function () {
     Route::post('verify', [AuthController::class, 'verify'])->name('user.verify');
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:user')->group(function () {
     Route::get('config', [ConfigController::class, 'get'])->name('config.get');
     
     Route::prefix('auth')->group(function () {

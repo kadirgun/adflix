@@ -24,10 +24,9 @@ class UserSeeder extends Seeder
         ]);
 
         $user->tokens()->firstOrCreate([
-            'id' => 1
+            'token' => hash('sha256', 'JT9nZjrCfkuM6FdRMYKsqV7bdeeHHxDScZ4PjgIP'),
         ], [
             'name' => 'auth_token',
-            'token' => hash('sha256', 'JT9nZjrCfkuM6FdRMYKsqV7bdeeHHxDScZ4PjgIP'),
             'abilities' => ['*']
         ]);
     }

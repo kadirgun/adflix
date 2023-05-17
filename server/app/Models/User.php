@@ -25,6 +25,7 @@ class User extends Authenticatable {
         'email_verified_at' => 'datetime',
         'status' => UserStatus::class,
         'settings' => 'object',
+        'earnings' => 'float'
     ];
 
     protected $appends = [
