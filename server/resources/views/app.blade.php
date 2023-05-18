@@ -6,11 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{$link->name}}</title>
+  <script>
+    window.link = @json([
+      'name' => $link->name,
+      'id' => $link->id,
+    ]);
+  </script>
 </head>
 
 <body>
   <div id="app"></div>
-  <script src="{{asset('js/app.js')}}"></script>
+  @vite('resources/vue/app.js')
 </body>
 
 </html>

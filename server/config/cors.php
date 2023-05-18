@@ -15,9 +15,11 @@ return [
     |
     */
 
-    'paths' => ['api.'.config('app.domain') => [
-        '*'
-    ], 'sanctum/csrf-cookie'],
+    'paths' => [
+        'api.' . config('app.domain') => ['*'],
+        'app.' . config('app.domain') => ['*'],
+        'sanctum/csrf-cookie'
+    ],
 
     'allowed_methods' => ['*'],
 
@@ -31,6 +33,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];

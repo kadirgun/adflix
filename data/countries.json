@@ -1,5 +1,25 @@
 [
   {
+    "name": "Unknown",
+    "code": "XX",
+    "capital": "Unknown",
+    "region": "XX",
+    "currency": {
+      "code": "XXX",
+      "name": "Unknown",
+      "symbol": "X"
+    },
+    "language": {
+      "code": "en",
+      "iso639_2": "eng",
+      "name": "English",
+      "nativeName": "English"
+    },
+    "flag": "https://restcountries.eu/data/xxx.svg",
+    "dialling_code": "+000",
+    "isoCode": "000"
+  },
+  {
     "name": "Afghanistan",
     "code": "AF",
     "capital": "Kabul",

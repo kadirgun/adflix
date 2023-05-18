@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdvertController;
 use App\Http\Controllers\LinkController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/publisher/auth/verify')->name('verification.verify');
 
 Route::get('{key}', [LinkController::class, 'show']);
+Route::get('banner/{id}', [AdvertController::class, 'frame']);

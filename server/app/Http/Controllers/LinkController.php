@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Domain;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Vite;
 
 class LinkController extends Controller {
     public function show($key) {

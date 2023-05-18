@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('name');
             $table->tinyInteger('type');
             $table->tinyInteger('category');
+            $table->decimal('cpc', 5, 4)->default(0.0000);
             $table->json('data');
             $table->timestamps();
         });
