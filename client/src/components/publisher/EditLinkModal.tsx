@@ -44,7 +44,7 @@ const EditLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
       target: value.target,
       excluded_categories: value.excluded_categories as any[],
       password: value.password,
-      domain: config.domains.find((item) => item.id === value.domain)?.id,
+      domain_id: config.domains.find((item) => item.id === value.domain.id)?.id,
     },
 
     validate: {
@@ -156,9 +156,9 @@ const EditLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
           searchable
           nothingFound="No domains"
           data={domains}
-          value={form.values.domain}
-          onChange={(item) => form.setFieldValue("domain", item)}
-          error={form.errors.domain}
+          value={form.values.domain_id}
+          onChange={(item) => form.setFieldValue("domain_id", item)}
+          error={form.errors.domain_id}
           disabled={loading}
           icon={<IconWorldWww size="1rem" />}
         />

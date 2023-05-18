@@ -15,11 +15,17 @@ export interface ILinksGroupProps {
   links?: { label: string; route: string }[];
 }
 
+export type Domain = {
+  id: number,
+  name: string,
+  status: number
+}
+
 export type Link = {
   id: number;
   key: string;
   name: string;
-  domain: number;
+  domain: Domain;
   type: number;
   target: string;
   password: string;

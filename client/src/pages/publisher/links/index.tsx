@@ -68,7 +68,7 @@ const Index = () => {
 			{loading ? (
 				<Skeleton height={180}></Skeleton>
 			) : (
-				<Grid>
+				<Grid mb="xl">
 					{data.map((link) => (
 						<Grid.Col xs={12} lg={6} xl={4} key={link.key}>
 							<LinkCard value={link} />

@@ -42,7 +42,7 @@ const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
       target: "",
       excluded_categories: [] as any[],
       password: "",
-      domain: config.domains.find(() => true)?.id,
+      domain_id: config.domains.find(() => true)?.id,
     },
 
     validate: {
@@ -154,9 +154,9 @@ const CreateLinkModal = ({ context, id, innerProps }: ContextModalProps) => {
           searchable
           nothingFound="No domains"
           data={domains}
-          value={form.values.domain}
-          onChange={(item) => form.setFieldValue("domain", item)}
-          error={form.errors.domain}
+          value={form.values.domain_id}
+          onChange={(item) => form.setFieldValue("domain_id", item)}
+          error={form.errors.domain_id}
           disabled={loading}
           icon={<IconWorldWww size="1rem" />}
         />

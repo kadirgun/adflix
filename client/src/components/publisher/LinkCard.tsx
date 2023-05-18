@@ -31,8 +31,13 @@ const LinkCard = ({ value }: ILinkCardProps) => {
 	const { clicks, domain, earnings, cpm, excluded_categories, key, name, password, target } = value;
 	const { classes, theme } = useStyles();
 	const config = useConfig();
-	const shortUrl = `https://${config.domains.find((item) => item.id === domain)?.name}/${key}`;
-	const favicon = `https://icon.horse/icon/?size=small&uri=${target}`;
+	const shortUrl = `https://${config.domains.find((item) => item.id === domain.id)?.name}/${key}`;
+	// delete path from url only domain
+	const targetUrl = new URL(target);
+	targetUrl.pathname = "";
+	targetUrl.search = "";
+	targetUrl.hash = "";
+	const favicon = `https://icon.horse/icon/?size=small&uri=${targetUrl}`;
 
 	const statsData = [
 		{
@@ -58,13 +63,15 @@ const LinkCard = ({ value }: ILinkCardProps) => {
 				<Grid gutter={0} align="flex-start">
 					<Grid.Col span={10}>
 						<Flex gap="xs" align={"flex-start"}>
-							<Avatar src={favicon} radius="sm" size={32} />
-							<Box maw="95%">
+							<Avatar src={favicon} radius="sm" size={32} sx={{
+								alignSelf: "center"
+							}} />
+							<Box maw="98%">
 								<Anchor href={target} underline={false} target="_blank" rel="noopener noreferrer" className={classes.anchorHover}>
-									<Text lh={1} fz="md" fw={500} truncate>
+									<Text fw={500} truncate>
 										{name || key}
 									</Text>
-									<Text fz="sm" c="dimmed" truncate>
+									<Text fz="xs" c="dimmed" truncate>
 										{target}
 									</Text>
 								</Anchor>
@@ -79,7 +86,7 @@ const LinkCard = ({ value }: ILinkCardProps) => {
 								</ActionIcon>
 							</Menu.Target>
 							<Menu.Dropdown>
-								<Menu.Item icon={<IconEdit size={rem(14)} />} color="blue" onClick={() => handleEditLink({value})}>
+								<Menu.Item icon={<IconEdit size={rem(14)} />} color="blue" onClick={() => handleEditLink({ value })}>
 									Edit
 								</Menu.Item>
 								<Menu.Item icon={<IconTrash size={rem(14)} />} color="red">
@@ -156,11 +163,11 @@ const LinkCard = ({ value }: ILinkCardProps) => {
 			<Card.Section pb="lg" px="md">
 				<SimpleGrid cols={3}>
 					{statsData.map((item) => (
-						<Flex p="xs" style={{ 
+						<Flex p="xs" style={{
 							border: `${rem(1)} dashed`,
 							borderColor: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[4],
 							borderRadius: theme.radius.sm
-						 }} key={item.label} direction="column" align="center" gap={6}>
+						}} key={item.label} direction="column" align="center" gap={6}>
 							<Text lh={1} size="sm" fw={700}>{item.label}</Text>
 							<Badge fz="xs">{item.value}</Badge>
 						</Flex>
