@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('key')->unique()->index();
             $table->string('name')->nullable();
             $table->tinyInteger('type')->default(1);
-            $table->string('target');
+            $table->string('target', 1024);
             $table->string('password')->nullable();
             $table->string('excluded_categories')->default('[]');
             $table->decimal('earnings', 10, 4)->default(0);

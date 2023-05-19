@@ -21,6 +21,7 @@ class Link extends Model {
         'cpm' => 'float'
     ];
     protected $with = ['domain'];
+    protected $appends = ['protected'];
 
     public function user() {
         return $this->belongsTo(User::class);
@@ -44,6 +45,14 @@ class Link extends Model {
 
     public function domain(){
         return $this->belongsTo(Domain::class);
+    }
+
+    public function getProtectedAttribute(){
+        return $this->password != null || $this->password != '';
+    }
+
+    public function getPasswordHashAttribute(){
+        return hash('sha256', $this->password);
     }
 
     public static function boot() {

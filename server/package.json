@@ -5,6 +5,7 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@types/crypto-js": "^4.1.1",
         "@vitejs/plugin-vue": "^4.2.3",
         "@vue/compiler-sfc": "^3.3.2",
         "autoprefixer": "^10.4.14",
@@ -18,6 +19,8 @@
     },
     "dependencies": {
         "@vueuse/core": "^10.1.2",
+        "crypto-js": "^4.1.1",
+        "plyr": "^3.7.8",
         "vue": "^3.3.2",
         "vue-recaptcha-v3": "^2.0.1"
     }

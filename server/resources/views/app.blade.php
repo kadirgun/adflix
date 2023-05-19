@@ -7,10 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{$link->name}}</title>
   <script>
-    window.link = @json([
-      'name' => $link->name,
-      'id' => $link->id,
-    ]);
+    window.link = @json($link);
   </script>
 </head>
 

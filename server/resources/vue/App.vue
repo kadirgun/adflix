@@ -1,8 +1,14 @@
 <template>
   <div class="flex flex-col justify-center align-center w-[100vw] h-[100vh]">
     <template v-if="!state.loading">
-      <BannerAds v-if="state.ads?.type == 1" :ads="state.ads" @conversion="sendEvent" @skip="getAdvert" />
-      <SoftwareAds v-else-if="state.ads?.type == 'software'" />
+      <template v-if="state.link.protected">
+        <PasswordCard @passed="onPassed" />
+      </template>
+      <template v-else>
+        <BannerAds v-if="state.ads?.type == 1" :ads="state.ads" @conversion="sendEvent" @skip="getAdvert" />
+        <SoftwareAds v-else-if="state.ads?.type == 'software'" />
+        <VideoAds v-else-if="state.ads?.type == 2" @passed="getAdvert" />
+      </template>
     </template>
     <Loader v-else />
   </div>
@@ -11,14 +17,17 @@
 <script setup>
 import BannerAds from '@/components/BannerAds.vue';
 import SoftwareAds from '@/components/SoftwareAds.vue';
+import VideoAds from '@/components/VideoAds.vue';
 import Loader from '@/components/Loader.vue';
+import PasswordCard from '@/components/PasswordCard.vue';
 import { reactive } from 'vue';
 import { useReCaptcha } from 'vue-recaptcha-v3';
 
 const state = reactive({
   ads: {},
   loading: true,
-  click: {}
+  click: {},
+  link: window.link
 })
 
 const APP_URL = import.meta.env.VITE_APP_URL;
@@ -55,7 +64,7 @@ const createClick = async () => {
 const getAdvert = async () => {
   state.ads = {};
   state.loading = true;
-  
+
   const response = await fetch(`${APP_URL}/advert`, {
     method: 'POST',
     credentials: 'include',
@@ -89,7 +98,17 @@ const sendEvent = async () => {
   })
 }
 
-init();
+if(!state.link.protected){
+  init();
+}else{
+  state.loading = false;
+}
+
+const onPassed = () => {
+  state.loading = true;
+  state.link.protected = false;
+  init();
+}
 
 </script>
 
