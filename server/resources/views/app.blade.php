@@ -8,12 +8,15 @@
   <title>{{$link->name}}</title>
   <script>
     window.link = @json($link);
+    window.host = "{{$host}}";
   </script>
 </head>
 
 <body>
   <div id="app"></div>
+  <img src="/images/{{$link->key}}.png" alt="">
   @vite('resources/vue/app.js')
 </body>
 
+  
 </html>

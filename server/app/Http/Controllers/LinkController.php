@@ -20,11 +20,14 @@ class LinkController extends Controller {
         if (!$link) {
             abort(404);
         }
+
+        $link->append('password_hash');
  
         $link->setVisible(['id', 'name', 'password_hash', 'protected']);
         
         return view('app', [
             'link' => $link,
+            'host' => hash_hmac('sha256', $host, config('app.secret'))
         ]);
     }
 }

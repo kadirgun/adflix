@@ -32,6 +32,10 @@ onMounted(() => {
   player.on('adscomplete', () => {
     emit('passed');
   });
+
+  player.on('adsclick', () => {
+    emit('passed');
+  })
 });
 
 </script>

@@ -38,6 +38,10 @@ server {
     location /storage/cdn {
         add_header Cache-Control "public, max-age=31536000";
     }
+
+    location ~* \.(wasm)$ {
+        default_type application/wasm;
+    }
  
     location = /favicon.ico { access_log off; log_not_found off; }
 

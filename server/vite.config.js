@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import wasm from "vite-plugin-wasm";
 
 export default defineConfig({
     plugins: [
@@ -9,16 +10,14 @@ export default defineConfig({
             refresh: true,
         }),
         vue(),
+        wasm(),
     ],
     server: {
         host: '0.0.0.0',
         hmr: {
-            host: process.env.APP_DOMAIN,
+            host: 'localhost',
+            protocol: 'ws',
         },
-        https: {
-            cert: './storage/app/ssl/cert.crt',
-            key: './storage/app/ssl/cert.key',
-        }
     },
     resolve: {
         alias: {

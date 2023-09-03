@@ -6,7 +6,9 @@ use App\Models\Advert;
 use App\Models\Click;
 use App\Models\Link;
 use App\Rules\ReCaptchaV3Rule;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 
 class ClickController extends Controller {

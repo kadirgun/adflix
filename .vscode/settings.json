@@ -1,4 +1,8 @@
 {
   "LaravelExtraIntellisense.basePathForCode": "${workspaceFolder}/server",
-  "LaravelExtraIntellisense.basePath": "${workspaceFolder}/server"
+  "LaravelExtraIntellisense.basePath": "${workspaceFolder}/server",
+  "go.toolsEnvVars": {
+    "GOOS": "js",
+    "GOARCH": "wasm"
+  }
 }

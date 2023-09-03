@@ -1,23 +1,20 @@
 <template>
   <div class="flex justify-center">
     <div class="card w-[300px] bg-base-100 shadow-xl">
-      <div class="h-[250px] flex flex-col justify-center align-middle">
-        <iframe ref="frame" :src="`/banner/${ads.id}`" frameborder="0" width="100%" height="100%"></iframe>
-      </div>
       <div class="card-body">
         <div class="card-title">Please wait!</div>
         <div>We are checking your browser.</div>
         <progress class="progress progress-info w-100" :value="progress" max="100"></progress>
 
         <div class="card-actions justify-end">
-          <button class="btn btn-primary btn-block normal-case" @click="$emit('skip')" :disabled="remaining > 0">
+          <a :href="url" target="_blank" class="btn btn-primary btn-block normal-case" @click="onClick" :class="{'btn-disabled': remaining > 0}">
             <template v-if="remaining > 0">
               Skip in {{ remaining }} seconds
             </template>
             <template v-else>
               Skip
             </template>
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -25,32 +22,33 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, computed, watch } from 'vue';
-import { useActiveElement, useInterval } from '@vueuse/core'
-
-const frame = ref(null);
+import { reactive, computed, watch } from 'vue';
+import { useInterval } from '@vueuse/core'
+import { usePageLeave } from '@vueuse/core'
 
 const props = defineProps({
   ads: {
     type: Object,
     required: true
+  },
+  click: {
+    type: Object,
+    required: true
   }
 })
 
-const emit = defineEmits(['conversion', 'skip'])
+const isLeft = usePageLeave()
+const emit = defineEmits(['skip'])
 
 const state = reactive({
-  link: window.link
+  link: window.link,
+  clicked: false
 })
 
-const activeElement = useActiveElement()
-
-onMounted(() => {
-  window.addEventListener('blur', () => {
-    if (activeElement.value == frame.value) {
-      emit('conversion');
-    }
-  });
+const url = computed(() => {
+  const url = new URL(props.ads.data.url);
+  url.searchParams.append('click_id', props.click.token);
+  return url.href;
 })
 
 const waitSeconds = 1;
@@ -64,6 +62,16 @@ const progress = computed(() => {
 
 const remaining = computed(() => {
   return Math.ceil(waitSeconds - (counter.value * interval / 1000));
+})
+
+const onClick = () => {
+  state.clicked = true;
+}
+
+watch(isLeft, (value) => {
+  if (!value && state.clicked) {
+    emit('skip');
+  }
 })
 
 watch(progress, (value) => {
