@@ -28,7 +28,7 @@ class AdvertController extends Controller {
             ], 404);
         }
 
-        $advert = Advert::query()->whereNotIn('category', $click->link->excluded_categories)->inRandomOrder()->where('type', AdvertType::Direct)->first();
+        $advert = Advert::query()->whereNotIn('category', $click->link->excluded_categories)->inRandomOrder()->where('type', AdvertType::Banner)->first();
 
         if(!$advert) {
             return response()->json([
